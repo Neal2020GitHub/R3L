@@ -22,12 +22,14 @@ cp scripts/env.example.sh scripts/env.sh
 vim scripts/env.sh
 ```
 
-Then, run the code simply by: 
+Finally, run the code simply by: 
 ```
 uv sync
 source scripts/env.sh
 uv run -q python main.py
 ```
+
+If you encountered any issue, please file an issue.
 
 
 ## BibTeX
