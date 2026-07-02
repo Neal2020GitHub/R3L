@@ -1,0 +1,485 @@
+{
+  "constr_json": {
+    "scene_entities": {
+      "independent_objects": [
+        "potted-plant-0",
+        "potted-plant-1",
+        "mirror-0",
+        "sideboard-0",
+        "wardrobe-0"
+      ],
+      "clusters": [
+        {
+          "cluster_id": "sleeping_area",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "bed-0"
+          },
+          "members": [
+            "bed-0",
+            "nightstand-0",
+            "nightstand-1"
+          ]
+        },
+        {
+          "cluster_id": "work_nook",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "desk-0"
+          },
+          "members": [
+            "desk-0",
+            "office-chair-0",
+            "floor-lamp-0"
+          ]
+        },
+        {
+          "cluster_id": "reading_nook",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "armchair-0"
+          },
+          "members": [
+            "armchair-0",
+            "side-table-0",
+            "floor-lamp-1"
+          ]
+        }
+      ]
+    },
+    "constraints": {
+      "composition": {
+        "against_wall": [
+          {
+            "src_kind": "cluster",
+            "src_id": "sleeping_area",
+            "wall": "L"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "sideboard-0",
+            "wall": "R"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "wardrobe-0",
+            "wall": "R"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "mirror-0",
+            "wall": "T"
+          }
+        ],
+        "corner": [
+          {
+            "src_kind": "cluster",
+            "src_id": "work_nook",
+            "corner": "BR",
+            "wall": "B"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "reading_nook",
+            "corner": "TR",
+            "wall": "T"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "potted-plant-0",
+            "corner": "TL",
+            "wall": "T"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "potted-plant-1",
+            "corner": "BL",
+            "wall": "B"
+          }
+        ],
+        "horizontal": [
+          {
+            "src_kind": "object",
+            "src_id": "mirror-0",
+            "x": 1.0,
+            "x_param": "mirror_top_x"
+          }
+        ],
+        "vertical": [
+          {
+            "src_kind": "cluster",
+            "src_id": "sleeping_area",
+            "y": 2.5,
+            "y_param": "bed_center_y"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "sideboard-0",
+            "y": 2.5,
+            "y_param": "dresser_center_y"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "wardrobe-0",
+            "y": 1.6,
+            "y_param": "wardrobe_center_y"
+          }
+        ]
+      },
+      "cluster_internal": {
+        "sleeping_area": {
+          "facing": [],
+          "left_of": [
+            {
+              "src_kind": "object",
+              "src_id": "nightstand-0",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.2,
+              "percentile": 0.0,
+              "clearance_param": "ns_clearance",
+              "percentile_param": "ns_alignment"
+            }
+          ],
+          "right_of": [
+            {
+              "src_kind": "object",
+              "src_id": "nightstand-1",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.2,
+              "percentile": 0.0,
+              "clearance_param": "ns_clearance",
+              "percentile_param": "ns_alignment"
+            }
+          ],
+          "in_front_of": [],
+          "behind_of": [],
+          "around": [],
+          "angle": [
+            {
+              "src_kind": "object",
+              "src_id": "nightstand-0",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "ns_align_angle"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "nightstand-1",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "ns_align_angle"
+            }
+          ]
+        },
+        "work_nook": {
+          "facing": [
+            {
+              "src_kind": "object",
+              "src_id": "office-chair-0",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "mutual": false,
+              "mode": "radial"
+            }
+          ],
+          "left_of": [
+            {
+              "src_kind": "object",
+              "src_id": "floor-lamp-0",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.2,
+              "percentile": 0.0,
+              "clearance_param": "desk_lamp_gap",
+              "percentile_param": "_anon_alignment_13"
+            }
+          ],
+          "right_of": [],
+          "in_front_of": [
+            {
+              "src_kind": "object",
+              "src_id": "office-chair-0",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.3,
+              "percentile": 0.5,
+              "clearance_param": "chair_front_gap",
+              "percentile_param": "_anon_alignment_12"
+            }
+          ],
+          "behind_of": [],
+          "around": [],
+          "angle": [
+            {
+              "src_kind": "object",
+              "src_id": "floor-lamp-0",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "desk_member_align"
+            }
+          ]
+        },
+        "reading_nook": {
+          "facing": [],
+          "left_of": [
+            {
+              "src_kind": "object",
+              "src_id": "floor-lamp-1",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.2,
+              "percentile": 0.0,
+              "clearance_param": "reading_side_gap",
+              "percentile_param": "_anon_alignment_15"
+            }
+          ],
+          "right_of": [
+            {
+              "src_kind": "object",
+              "src_id": "side-table-0",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.2,
+              "percentile": 0.0,
+              "clearance_param": "reading_side_gap",
+              "percentile_param": "_anon_alignment_14"
+            }
+          ],
+          "in_front_of": [],
+          "behind_of": [],
+          "around": [],
+          "angle": [
+            {
+              "src_kind": "object",
+              "src_id": "side-table-0",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "reading_member_align"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "floor-lamp-1",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "reading_member_align"
+            }
+          ]
+        }
+      },
+      "scene_relational": {
+        "facing": [],
+        "left_of": [],
+        "right_of": [],
+        "in_front_of": [],
+        "behind_of": [],
+        "around": [],
+        "angle": []
+      }
+    },
+    "constraint_params": {
+      "names": [
+        "bed_center_y",
+        "ns_clearance",
+        "ns_alignment",
+        "ns_align_angle",
+        "chair_front_gap",
+        "desk_lamp_gap",
+        "desk_member_align",
+        "reading_side_gap",
+        "reading_member_align",
+        "dresser_center_y",
+        "wardrobe_center_y",
+        "mirror_top_x",
+        "_anon_alignment_12",
+        "_anon_alignment_13",
+        "_anon_alignment_14",
+        "_anon_alignment_15"
+      ],
+      "priors": [
+        2.5,
+        0.2,
+        0.0,
+        0.0,
+        0.3,
+        0.2,
+        0.0,
+        0.2,
+        0.0,
+        2.5,
+        1.6,
+        1.0,
+        0.5,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "kinds": [
+        "nonneg",
+        "nonneg",
+        "unit",
+        "angle_deg",
+        "nonneg",
+        "nonneg",
+        "angle_deg",
+        "nonneg",
+        "angle_deg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "unit",
+        "unit",
+        "unit",
+        "unit"
+      ]
+    }
+  },
+  "objects": [
+    "floor-lamp-0",
+    "floor-lamp-1",
+    "desk-0",
+    "office-chair-0",
+    "nightstand-0",
+    "nightstand-1",
+    "side-table-0",
+    "potted-plant-0",
+    "potted-plant-1",
+    "mirror-0",
+    "sideboard-0",
+    "bed-0",
+    "armchair-0",
+    "wardrobe-0"
+  ],
+  "bbox": {
+    "x": [
+      0.33772584795951843,
+      0.33772584795951843,
+      1.2650537490844727,
+      0.6725648641586304,
+      0.4832598865032196,
+      0.4832598865032196,
+      0.469772070646286,
+      0.23730042576789856,
+      0.23730042576789856,
+      0.6515330076217651,
+      2.418394088745117,
+      2.2976999282836914,
+      0.7910082340240479,
+      2.0628862380981445
+    ],
+    "y": [
+      0.3366256356239319,
+      0.3366256356239319,
+      0.6719289422035217,
+      0.8827331066131592,
+      0.3858819901943207,
+      0.3858819901943207,
+      0.4697720408439636,
+      0.2824835181236267,
+      0.2824835181236267,
+      0.44719499349594116,
+      0.48531949520111084,
+      2.6053802967071533,
+      0.9631139039993286,
+      0.7091171145439148
+    ],
+    "z": [
+      1.6057767868041992,
+      1.6057767868041992,
+      0.7708805799484253,
+      1.1995387077331543,
+      0.8032259941101074,
+      0.8032259941101074,
+      0.6046531796455383,
+      0.40192487835884094,
+      0.40192487835884094,
+      1.811042070388794,
+      0.75,
+      1.2309107780456543,
+      1.017203450202942,
+      2.030653953552246
+    ]
+  },
+  "room_size": [
+    5.0,
+    5.0
+  ],
+  "pose": {
+    "x": [
+      2.782954454421997,
+      4.391557693481445,
+      3.70904541015625,
+      3.704594373703003,
+      0.23755121231079102,
+      0.2378166913986206,
+      2.8524889945983887,
+      0.11865023523569107,
+      0.11865021288394928,
+      1.0,
+      4.791721343994141,
+      1.3026978969573975,
+      3.662790536880493,
+      4.696172714233398
+    ],
+    "y": [
+      0.17057617008686066,
+      4.801154613494873,
+      0.33683422207832336,
+      1.2408802509307861,
+      4.080691337585449,
+      0.9176121950149536,
+      4.746847629547119,
+      4.858757972717285,
+      0.14124175906181335,
+      4.776402473449707,
+      3.2723195552825928,
+      2.4989190101623535,
+      4.515986442565918,
+      1.0295878648757935
+    ],
+    "rz": [
+      0.0005591115914285184,
+      -3.1464016437530518,
+      0.0005632694228552282,
+      -3.1407291889190674,
+      4.712393283843995,
+      4.712393283843995,
+      -3.146290540695191,
+      -3.1415927410125732,
+      0.0,
+      3.1415927410125732,
+      1.5619231462478638,
+      4.712393283843995,
+      3.1368892192840576,
+      1.571939468383789
+    ]
+  },
+  "snapshot": {
+    "loss": 1.6794350147247314,
+    "nominal": {
+      "coll_global": 4.518215428106487e-05,
+      "coll_local": 0.0,
+      "wall": 0.007756310515105724,
+      "aesthetics": 0.03799016401171684,
+      "against_wall_loss": 0.004155647475272417,
+      "corner_loss": 0.6284209489822388,
+      "horizontal_abs_loss": 0.0,
+      "vertical_abs_loss": 0.9218482971191406,
+      "gap_loss": 0.03760584443807602,
+      "left_of_loss": 0.07115750014781952,
+      "right_of_loss": 0.0644833892583847,
+      "angle_loss": 0.0,
+      "fr_loss": 8.225440979003906e-06,
+      "in_front_of_loss": 0.003941813949495554,
+      "prior_unit": 0.0,
+      "prior_nonneg": 0.0,
+      "prior_angle_deg": 0.0
+    }
+  }
+}

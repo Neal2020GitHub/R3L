@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scene Builder</title>
+    <style>
+        /* Modern Minimalist Theme */
+        :root {
+            --color-charcoal: #36454f;
+            --color-slate: #708090;
+            --color-light: #d3d3d3;
+            --color-white: #ffffff;
+            --color-surface: #f8f9fa;
+            --color-hover: #4a5d6a;
+            --font-family: "DejaVu Sans", system-ui, sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-family); background: var(--color-surface); color: var(--color-charcoal); }
+
+        .container { display: grid; grid-template-columns: 300px 1fr 320px; gap: 16px; padding: 16px; height: 100vh; }
+
+        .panel { background: var(--color-white); border-radius: 8px; padding: 16px; overflow-y: auto; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .panel h2 { font-size: 14px; color: var(--color-slate); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        input, button, select { font-family: inherit; font-size: 14px; }
+        input, select { background: var(--color-white); border: 1px solid var(--color-light); color: var(--color-charcoal); padding: 8px 12px; border-radius: 4px; width: 100%; }
+        input:focus, select:focus { outline: none; border-color: var(--color-slate); }
+        button { background: var(--color-charcoal); color: var(--color-white); border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; transition: background 0.15s; }
+        button:hover { background: var(--color-hover); }
+        button:disabled { background: var(--color-light); color: var(--color-slate); cursor: not-allowed; }
+        button.secondary { background: var(--color-surface); color: var(--color-charcoal); border: 1px solid var(--color-light); }
+        button.secondary:hover { background: var(--color-light); }
+
+        .form-row { margin-bottom: 12px; }
+        .form-row label { display: block; font-size: 12px; color: var(--color-slate); margin-bottom: 4px; }
+        .form-row-inline { display: flex; gap: 8px; }
+        .form-row-inline input { flex: 1; }
+
+        /* Room Init */
+        #room-init { height: auto; }
+
+        /* Canvas Area */
+        .canvas-wrapper { display: flex; flex-direction: column; }
+        /*
+         * CRITICAL: Do NOT add "width: 100%; height: 100%;" to #canvas.
+         *
+         * WHY THIS BREAKS:
+         * Canvas elements have TWO separate size concepts:
+         *   1. Buffer size (canvas.width, canvas.height attributes) - the actual pixel resolution
+         *   2. Display size (CSS width/height) - how big it appears on screen
+         *
+         * When you use CSS percentage sizing (height: 100%) on a canvas inside a flex container:
+         *   - The canvas has an "intrinsic size" from its buffer attributes (set by JavaScript)
+         *   - CSS "height: 100%" tells the canvas to match its parent's height
+         *   - BUT the flex parent's height depends on its content's intrinsic size
+         *   - This creates a CIRCULAR DEPENDENCY:
+         *       Container height → Canvas display height → Canvas intrinsic height → Container height
+         *
+         * THE FEEDBACK LOOP:
+         *   1. ResizeObserver fires, reads container size, sets canvas.width/height attributes
+         *   2. Canvas now has large intrinsic dimensions
+         *   3. Flex container sees canvas intrinsic size, grows to accommodate it
+         *   4. Container is now larger → ResizeObserver fires again
+         *   5. Larger container → larger canvas attributes → larger container → INFINITE GROWTH
+         *
+         * SYMPTOMS:
+         *   - Canvas height grows uncontrollably when browser width shrinks
+         *   - Layout never recovers when resizing back (container stays oversized)
+         *   - Asset Browser panel gets pushed off-screen
+         *   - Eventually hits browser canvas size limits and crashes
+         *
+         * THE FIX:
+         *   JavaScript explicitly sets BOTH buffer AND display dimensions (see resizeCanvas()).
+         *   No CSS percentage sizing = no circular dependency = no feedback loop.
+         */
+        #canvas { background: var(--color-white); border-radius: 4px; cursor: crosshair; border: 1px solid var(--color-light); }
+        .canvas-info { font-size: 12px; color: var(--color-slate); margin-top: 8px; }
+
+        /* Asset Browser */
+        .search-bar { display: flex; gap: 8px; margin-bottom: 12px; }
+        .search-bar input { flex: 1; }
+        .asset-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+        .asset-card { position: relative; background: var(--color-surface); border: 1px solid var(--color-light); border-radius: 4px; padding: 8px; cursor: pointer; transition: transform 0.1s, border-color 0.15s; }
+        .asset-card:hover { transform: scale(1.02); border-color: var(--color-slate); }
+        .asset-card.selected { outline: 2px solid var(--color-charcoal); }
+        .asset-card img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 4px; background: var(--color-light); }
+        .asset-card .name { font-size: 11px; margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .asset-card .size { font-size: 10px; color: var(--color-slate); }
+
+        /* Asset Palette */
+        .selected-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+        .selected-item { position: relative; display: flex; align-items: center; gap: 8px; background: var(--color-surface); border: 1px solid var(--color-light); border-radius: 4px; padding: 8px; cursor: grab; }
+        .selected-item img { width: 48px; height: 48px; object-fit: cover; border-radius: 4px; }
+        .selected-item .info { flex: 1; min-width: 0; }
+        /*
+         * ═══════════════════════════════════════════════════════════════════════════
+         * CRITICAL: Badge Visibility Fix for Imported Assets
+         * ═══════════════════════════════════════════════════════════════════════════
+         *
+         * PROBLEM (Jan 2026):
+         * When importing benchmark JSON files, the object count badges in the selected
+         * asset list were invisible, even though the badge HTML was being correctly
+         * generated. Newly added assets (via search) showed badges fine.
+         *
+         * ROOT CAUSE:
+         * The .name div had `overflow: hidden; text-overflow: ellipsis` to truncate
+         * long names gracefully. The badge <span> was placed INSIDE this div:
+         *
+         *   <div class="name">Very Long Asset Name<span class="badge">3</span></div>
+         *
+         * For SEARCHED assets: Names are human-readable ("Chair", "Bed") - short
+         * enough that the badge fits within the visible width.
+         *
+         * For IMPORTED assets: Names default to the asset_id (a 32-char UUID like
+         * "3229a8c480954131940ff791f6af4cf7"). This pushes the badge past the
+         * container's visible width, where `overflow: hidden` CLIPS IT COMPLETELY.
+         *
+         * The badge existed in the DOM but was invisible due to CSS clipping.
+         *
+         * SOLUTION:
+         * Use flexbox to separate "truncatable text" from "always-visible badge":
+         *
+         *   .name          -> flex container (no overflow clipping)
+         *   .name-text     -> flex child that handles text truncation
+         *   .badge         -> flex child that remains visible (defined elsewhere)
+         *
+         * HTML structure:
+         *   <div class="name">
+         *     <span class="name-text">Long Name Here...</span>
+         *     <span class="badge">3</span>   <!-- Always visible -->
+         *   </div>
+         *
+         * WHY THIS WORKS:
+         * - Flexbox treats .name-text and .badge as separate flex items
+         * - .name-text has `min-width: 0` allowing it to shrink below content size
+         * - .name-text has `overflow: hidden` to truncate its own content
+         * - .badge is a sibling, NOT a child of the truncated element, so it
+         *   cannot be clipped by the text truncation overflow
+         *
+         * REGRESSION WARNING:
+         * DO NOT revert to putting overflow:hidden on .name directly.
+         * DO NOT put the badge inside .name-text.
+         * DO NOT remove min-width:0 from .name-text (breaks flex shrinking).
+         * Any of these changes will re-hide badges for imported assets.
+         *
+         * TEST: Import a benchmark JSON, verify badges appear next to UUID names.
+         * ═══════════════════════════════════════════════════════════════════════════
+         */
+        .selected-item .name { display: flex; align-items: center; font-size: 12px; gap: 4px; }
+        .selected-item .name-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+        .selected-item .dims { font-size: 10px; color: var(--color-slate); }
+        .selected-item .remove { background: none; color: var(--color-slate); padding: 4px 8px; font-size: 16px; }
+        .selected-item .remove:hover { color: var(--color-charcoal); }
+
+        .occupancy { background: var(--color-surface); border: 1px solid var(--color-light); padding: 12px; border-radius: 4px; margin-bottom: 12px; }
+        .occupancy-bar { height: 8px; background: var(--color-light); border-radius: 4px; overflow: hidden; margin-top: 8px; }
+        .occupancy-fill { height: 100%; background: var(--color-charcoal); transition: width 0.3s; }
+
+        .export-section { margin-top: auto; }
+        .export-section button { width: 100%; }
+
+        /* Loading state */
+        .loading { opacity: 0.5; pointer-events: none; }
+        .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid var(--color-white); border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: middle; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Placement count badge */
+        .badge {
+            display: inline-flex; align-items: center; justify-content: center;
+            min-width: 16px; height: 16px; background: var(--color-charcoal);
+            color: var(--color-white); border-radius: 8px; font-size: 10px;
+            margin-left: 6px; padding: 0 4px;
+        }
+
+        /* Multi-View Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content {
+            background: var(--color-white);
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 420px;
+            width: 90%;
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--color-slate);
+            padding: 4px;
+        }
+        .modal-close:hover { color: var(--color-charcoal); }
+        .modal-image {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: contain;
+            background: var(--color-surface);
+            border-radius: 8px;
+        }
+        .modal-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+        }
+        .modal-nav button {
+            background: var(--color-charcoal);
+            border: none;
+            color: var(--color-white);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .modal-nav button:hover { background: var(--color-hover); }
+        .view-indicator { color: var(--color-slate); font-size: 14px; }
+
+        /* Eye Button */
+        .eye-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            color: var(--color-slate);
+            transition: color 0.15s;
+            display: flex;
+            align-items: center;
+        }
+        .eye-btn:hover { color: var(--color-charcoal); }
+
+        /* Copy Button */
+        .copy-btn {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            background: var(--color-white);
+            border: 1px solid var(--color-light);
+            border-radius: 4px;
+            padding: 4px;
+            cursor: pointer;
+            color: var(--color-slate);
+            transition: color 0.15s, border-color 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+        .copy-btn:hover {
+            color: var(--color-charcoal);
+            border-color: var(--color-slate);
+        }
+
+        /* Asset card info row with eye icon */
+        .asset-card .card-info { display: flex; justify-content: space-between; align-items: flex-start; margin-top: 6px; }
+        .asset-card .card-text { flex: 1; min-width: 0; }
+
+        /* Render Modal */
+        .render-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+        }
+        .render-modal-overlay.active { opacity: 1; visibility: visible; }
+        .render-modal {
+            background: var(--color-white);
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow: auto;
+        }
+        .render-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .render-tab {
+            padding: 8px 16px;
+            background: var(--color-surface);
+            border: 1px solid var(--color-light);
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 14px;
+        }
+        .render-tab:hover { background: var(--color-light); }
+        .render-tab.active {
+            background: var(--color-charcoal);
+            color: var(--color-white);
+            border-color: var(--color-charcoal);
+        }
+        .render-image {
+            width: 100%;
+            border-radius: 8px;
+            background: var(--color-surface);
+        }
+        .render-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px;
+            color: var(--color-slate);
+        }
+        .render-loading .spinner {
+            width: 32px;
+            height: 32px;
+            border-width: 3px;
+            margin-bottom: 16px;
+        }
+
+        /* Render Settings Panel */
+        .render-settings {
+            background: var(--color-surface);
+            border: 1px solid var(--color-light);
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+        }
+        .render-settings .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .render-settings .checkbox-label input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Panel: Asset Browser -->
+        <div class="panel" id="asset-browser">
+            <h2>Asset Browser</h2>
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search assets..." onkeypress="if(event.key==='Enter')searchAssets()">
+                <button onclick="searchAssets()">Search</button>
+            </div>
+            <div class="asset-grid" id="asset-grid"></div>
+            <button id="load-more-btn" class="secondary" onclick="loadMore()" style="width: 100%; margin-top: 8px; display: none;">
+                Load More
+            </button>
+        </div>
+
+        <!-- Center: Canvas + Room Setup -->
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+            <!-- Canvas -->
+            <div class="panel canvas-wrapper" style="flex: 1;">
+                <h2>Room Preview (Top-Down)</h2>
+                <!--
+                    overflow: hidden - Safety net to prevent canvas from pushing container larger.
+                    min-height: 200px - Matches MIN_DIM in resizeCanvas(), prevents collapse.
+                    See detailed comments in CSS (#canvas) and JS (resizeCanvas) for why
+                    canvas sizing is handled explicitly by JavaScript, not CSS percentages.
+                -->
+                <div style="position: relative; flex: 1; display: flex; align-items: center; justify-content: center; min-height: 200px; overflow: hidden;">
+                    <canvas id="canvas"></canvas>
+                </div>
+                <div class="canvas-info" style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>Click to select • Drag to move • R to rotate • Del to remove • Scroll to zoom • Drag empty space to pan</span>
+                    <button class="secondary" onclick="resetView()" style="padding: 4px 8px; font-size: 11px;">Reset View</button>
+                </div>
+            </div>
+
+            <!-- Room Setup -->
+            <div class="panel" id="room-init">
+                <h2>Room Setup</h2>
+                <div class="form-row form-row-inline">
+                    <div>
+                        <label>Room Type</label>
+                        <select id="room-type">
+                            <option value="bedroom">Bedroom</option>
+                            <option value="living room">Living Room</option>
+                            <option value="kitchen">Kitchen</option>
+                            <option value="dining room">Dining Room</option>
+                            <option value="office">Office</option>
+                            <option value="bathroom">Bathroom</option>
+                            <option value="classroom">Classroom</option>
+                            <option value="game room">Game Room</option>
+                            <option value="restaurant">Restaurant</option>
+                            <option value="gym">Gym</option>
+                            <option value="bookstore">Bookstore</option>
+                            <option value="meeting room">Meeting Room</option>
+                            <option value="music room">Music Room</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Difficulty</label>
+                        <select id="difficulty">
+                            <option value="easy">Easy</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row form-row-inline">
+                    <div>
+                        <label>Width (m)</label>
+                        <input type="number" id="room-width" value="5" min="2" max="20" step="0.5">
+                    </div>
+                    <div>
+                        <label>Height (m)</label>
+                        <input type="number" id="room-height" value="4" min="2" max="20" step="0.5">
+                    </div>
+                    <div style="flex: 2;">
+                        <label>Additional Requirements</label>
+                        <input type="text" id="additional-requirements" placeholder="e.g., minimalist style, no glass">
+                    </div>
+                </div>
+                <button id="generate-btn" onclick="generateRoom()">Generate Room</button>
+                <button id="regenerate-btn" class="secondary" onclick="regeneratePrompt()" style="display: none; margin-left: 8px;">Re-generate Prompt</button>
+
+                <div id="prompt-display" style="margin-top: 16px; font-size: 12px; color: var(--color-slate); display: none;">
+                    <strong>Layout:</strong>
+                    <textarea id="prompt-text" oninput="if(state.roomConfig) state.roomConfig.prompt = this.value" rows="3" style="margin-top: 4px; width: 100%; resize: vertical; font-family: inherit; font-size: 12px; color: var(--color-charcoal); border: 1px solid var(--color-light); border-radius: 4px; padding: 8px;"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel: Asset Palette -->
+        <div class="panel" style="display: flex; flex-direction: column;">
+            <h2>Asset Palette</h2>
+
+            <div class="occupancy">
+                <span>Occupancy: <strong id="occupancy-pct">0%</strong></span>
+                <div class="occupancy-bar">
+                    <div class="occupancy-fill" id="occupancy-fill" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <div class="selected-list" id="selected-list"></div>
+
+            <div class="export-section">
+                <input type="file" id="import-file" accept=".json" style="display:none" onchange="importBenchmark(event)">
+                <button class="secondary" onclick="document.getElementById('import-file').click()" style="margin-bottom: 8px;">Import JSON</button>
+                <button onclick="exportBenchmark()" style="margin-bottom: 8px;">Export JSON</button>
+                <button class="secondary" onclick="startRender()">🎨 Blender Render</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Multi-View Modal -->
+    <div id="view-modal" class="modal-overlay" onclick="if(event.target===this)closeViewModal()">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeViewModal()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
+            <img id="modal-image" class="modal-image" src="" alt="Asset view">
+            <div class="modal-nav">
+                <button onclick="prevView()">← Prev</button>
+                <span id="view-indicator" class="view-indicator">Front (1/4)</span>
+                <button onclick="nextView()">Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blender Render Modal -->
+    <div id="render-modal" class="render-modal-overlay" onclick="if(event.target===this)closeRenderModal()">
+        <div class="render-modal">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h2 style="margin: 0; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--color-slate);">Blender Render</h2>
+                <button class="modal-close" onclick="closeRenderModal()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div id="render-settings" class="render-settings">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="disable-floor-checkbox">
+                    <span>Disable floor plane</span>
+                </label>
+                <label class="checkbox-label">
+                    <span>Side view:</span>
+                    <select id="side-view-select" style="margin-left: 8px;">
+                        <option value="0">45_0 (Front)</option>
+                        <option value="1">45_1 (Left)</option>
+                        <option value="2">45_2 (Back)</option>
+                        <option value="3" selected>45_3 (Right)</option>
+                    </select>
+                </label>
+                <button onclick="doRender()" style="width: 100%; margin-top: 12px;">Start Render</button>
+            </div>
+
+            <div id="render-loading" class="render-loading" style="display: none;">
+                <span class="spinner"></span>
+                <span>Rendering... (typically 10-20 seconds)</span>
+            </div>
+
+            <div id="render-content" style="display: none;">
+                <div class="render-tabs">
+                    <button class="render-tab active" onclick="showRenderView('top_down')">Top Down</button>
+                    <button class="render-tab" onclick="showRenderView('side')">Side View</button>
+                </div>
+                <img id="render-image" class="render-image" src="" alt="Rendered scene">
+                <div style="margin-top: 16px; display: flex; gap: 8px;">
+                    <button onclick="downloadRenderImage()">Download Image</button>
+                    <button onclick="downloadBlendFile()">Download .blend</button>
+                    <button class="secondary" onclick="closeRenderModal()">Close</button>
+                </div>
+            </div>
+
+            <div id="render-error" style="display: none; color: #c00; padding: 20px;">
+                <strong>Render failed:</strong>
+                <pre id="render-error-msg" style="margin-top: 8px; white-space: pre-wrap; font-size: 12px; background: var(--color-surface); padding: 12px; border-radius: 4px; overflow-x: auto;"></pre>
+                <button class="secondary" onclick="closeRenderModal()" style="margin-top: 16px;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========================================
+        // Theme (mirrors CSS custom properties)
+        // ========================================
+        const THEME = {
+            charcoal: '#36454f',
+            slate: '#708090',
+            light: '#d3d3d3',
+            white: '#ffffff',
+            surface: '#f8f9fa',
+        };
+
+        // ========================================
+        // State
+        // ========================================
+        const state = {
+            roomConfig: null,
+            assetPalette: [],
+            canvasItems: [],          // [{instanceId, assetId, x, y, rotation}] in METERS
+            searchResults: [],
+            searchOffset: 0,
+            searchQuery: '',
+            hasMore: false,
+            viewTransform: { scale: 60, offsetX: 0, offsetY: 0 },
+            selectedItem: null,       // instanceId of selected canvas item
+            interaction: null,        // {type: 'drag-item'|'drag-canvas', ...}
+            hoveredAssetId: null,     // asset_id when hovering sidebar item
+        };
+
+        // ========================================
+        // Multi-View Modal
+        // ========================================
+        const modalState = {
+            assetId: null,
+            frontView: 0,      // Which view index is the "front" (from annotations)
+            currentView: 0,    // Which view index we're currently showing
+            viewLabels: ['Front', 'Right', 'Back', 'Left']
+        };
+
+        function openViewModal(assetId, frontView) {
+            modalState.assetId = assetId;
+            modalState.frontView = frontView || 0;
+            modalState.currentView = modalState.frontView;  // Start at front
+            updateModalImage();
+            document.getElementById('view-modal').classList.add('active');
+        }
+
+        function closeViewModal() {
+            document.getElementById('view-modal').classList.remove('active');
+            modalState.assetId = null;
+        }
+
+        function getViewLabel(viewIndex) {
+            // Calculate which label to show based on offset from frontView
+            // If frontView=2 and currentView=0, offset=(0-2+4)%4=2 → "Back"
+            const offset = (viewIndex - modalState.frontView + 4) % 4;
+            return modalState.viewLabels[offset];
+        }
+
+        function updateModalImage() {
+            const img = document.getElementById('modal-image');
+            const indicator = document.getElementById('view-indicator');
+            img.src = `/api/asset-preview/${modalState.assetId}?view=${modalState.currentView}`;
+            indicator.textContent = `${getViewLabel(modalState.currentView)} (${modalState.currentView + 1}/4)`;
+        }
+
+        function nextView() {
+            modalState.currentView = (modalState.currentView + 1) % 4;
+            updateModalImage();
+        }
+
+        function prevView() {
+            modalState.currentView = (modalState.currentView + 3) % 4;
+            updateModalImage();
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.getElementById('view-modal').classList.contains('active')) {
+                closeViewModal();
+            }
+        });
+
+        // ========================================
+        // Copy Asset ID
+        // ========================================
+        async function copyAssetId(assetId, buttonElement) {
+            try {
+                await navigator.clipboard.writeText(assetId);
+
+                const originalHTML = buttonElement.innerHTML;
+
+                buttonElement.innerHTML = `
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>`;
+
+                setTimeout(() => {
+                    buttonElement.innerHTML = originalHTML;
+                }, 1500);
+            } catch (err) {
+                console.error('Copy failed:', err);
+            }
+        }
+
+        const PIXELS_PER_METER = 60;
+
+        // ========================================
+        // Coordinate Transforms
+        // ========================================
+        function worldToScreen(wx, wy) {
+            const vt = state.viewTransform;
+            return { x: wx * vt.scale + vt.offsetX, y: wy * vt.scale + vt.offsetY };
+        }
+
+        function screenToWorld(sx, sy) {
+            const vt = state.viewTransform;
+            return { x: (sx - vt.offsetX) / vt.scale, y: (sy - vt.offsetY) / vt.scale };
+        }
+
+        // ========================================
+        // Helper Functions
+        // ========================================
+        function findAsset(assetId) {
+            return state.assetPalette.find(a => a.asset_id === assetId);
+        }
+
+        function findCanvasItem(instanceId) {
+            return state.canvasItems.find(c => c.instanceId === instanceId);
+        }
+
+        function getPlacementCount(assetId) {
+            return state.canvasItems.filter(c => c.assetId === assetId).length;
+        }
+
+        // ========================================
+        // Hit Testing
+        // ========================================
+        function pointInRotatedRect(px, py, item, bbox) {
+            const hw = bbox.x / 2;
+            const hh = bbox.z / 2;
+            const cx = item.x + hw;
+            const cy = item.y + hh;
+
+            const dx = px - cx;
+            const dy = py - cy;
+            const cos = Math.cos(-item.rotation);
+            const sin = Math.sin(-item.rotation);
+
+            const localX = dx * cos - dy * sin;
+            const localY = dx * sin + dy * cos;
+
+            return Math.abs(localX) <= hw && Math.abs(localY) <= hh;
+        }
+
+        function hitTest(screenX, screenY) {
+            const world = screenToWorld(screenX, screenY);
+
+            for (let i = state.canvasItems.length - 1; i >= 0; i--) {
+                const item = state.canvasItems[i];
+                const asset = findAsset(item.assetId);
+                if (!asset || !asset.bbox) continue;
+
+                if (pointInRotatedRect(world.x, world.y, item, asset.bbox)) {
+                    return item;
+                }
+            }
+            return null;
+        }
+
+        // ========================================
+        // Room Generation
+        // ========================================
+        async function generateRoom() {
+            const btn = document.getElementById('generate-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Generating...';
+
+            const roomType = document.getElementById('room-type').value;
+            const difficulty = document.getElementById('difficulty').value;
+            const roomWidth = parseFloat(document.getElementById('room-width').value);
+            const roomHeight = parseFloat(document.getElementById('room-height').value);
+            const additionalRequirements = document.getElementById('additional-requirements').value.trim();
+
+            try {
+                const resp = await fetch('/api/init-room', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({room_type: roomType, difficulty: difficulty, room_width: roomWidth, room_height: roomHeight, additional_requirements: additionalRequirements}),
+                });
+
+                const data = await resp.json();
+                state.roomConfig = data;
+                state.assetPalette = data.asset_palette || [];
+                state.canvasItems = [];
+                state.selectedItem = null;
+
+                // Show prompt and regenerate button
+                document.getElementById('prompt-display').style.display = 'block';
+                document.getElementById('prompt-text').value = data.prompt;
+                document.getElementById('regenerate-btn').style.display = 'inline-block';
+
+                // Update UI (resetView centers the room and calls updateCanvas)
+                resetView();
+                renderAssetPalette();
+                updateOccupancy();
+
+            } catch (e) {
+                alert('Error generating room: ' + e.message);
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'Generate Room';
+        }
+
+        async function regeneratePrompt() {
+            if (!state.roomConfig) return;
+            // Re-generate describes the objects PLACED on the canvas (same source Export uses).
+            // With an empty canvas there is nothing to describe, so guard rather than
+            // overwrite the existing prompt with an "empty room" description.
+            if (state.canvasItems.length === 0) {
+                alert('Place objects on the canvas first — Re-generate describes the objects currently placed in the room.');
+                return;
+            }
+
+            const btn = document.getElementById('regenerate-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Generating...';
+
+            // Count objects by name
+            const counts = {};
+            state.canvasItems.forEach(item => {
+                const asset = findAsset(item.assetId);
+                const name = asset?.name || asset?.object_name || 'unknown';
+                counts[name] = (counts[name] || 0) + 1;
+            });
+
+            const objects = Object.entries(counts).map(([name, count]) => ({name, count}));
+
+            try {
+                const resp = await fetch('/api/regenerate-prompt', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        room_type: state.roomConfig.room_type,
+                        room_size: state.roomConfig.room_size,
+                        objects,
+                    }),
+                });
+
+                const data = await resp.json();
+                document.getElementById('prompt-text').value = data.prompt;
+                state.roomConfig.prompt = data.prompt;
+
+            } catch (e) {
+                alert('Error regenerating prompt: ' + e.message);
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'Re-generate Prompt';
+        }
+
+        // ========================================
+        // Asset Search
+        // ========================================
+        async function searchAssets(append = false) {
+            const query = document.getElementById('search-input').value.trim();
+            if (!query) return;
+
+            if (!append) {
+                state.searchOffset = 0;
+                state.searchQuery = query;
+            }
+
+            const grid = document.getElementById('asset-grid');
+            if (!append) grid.innerHTML = `<div style="grid-column: 1/-1; color: ${THEME.slate};">Searching...</div>`;
+
+            try {
+                const resp = await fetch('/api/search-assets', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({query: state.searchQuery, offset: state.searchOffset, limit: 8}),
+                });
+
+                const data = await resp.json();
+                state.searchResults = append ? [...state.searchResults, ...data.assets] : data.assets;
+                state.hasMore = data.has_more;
+                state.searchOffset += data.assets.length;
+
+                renderAssetGrid();
+
+            } catch (e) {
+                grid.innerHTML = `<div style="grid-column: 1/-1; color: ${THEME.charcoal};">Search failed</div>`;
+            }
+        }
+
+        async function loadMore() {
+            const btn = document.getElementById('load-more-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Loading...';
+
+            await searchAssets(true);
+
+            btn.disabled = false;
+            btn.textContent = 'Load More';
+        }
+
+        function renderAssetGrid() {
+            const grid = document.getElementById('asset-grid');
+            grid.innerHTML = '';
+
+            state.searchResults.forEach(asset => {
+                const card = document.createElement('div');
+                card.className = 'asset-card';
+                card.innerHTML = `
+                    <button class="copy-btn" onclick="event.stopPropagation(); copyAssetId('${asset.asset_id}', this)" title="Copy asset ID">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                        </svg>
+                    </button>
+                    <img src="${asset.preview_url}" alt="${asset.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22/>'">
+                    <div class="card-info">
+                        <div class="card-text">
+                            <div class="name" title="${asset.name}">${asset.name}</div>
+                            <div class="size">${formatBbox(asset.bbox)}</div>
+                        </div>
+                        <button class="eye-btn" onclick="event.stopPropagation(); openViewModal('${asset.asset_id}', ${asset.front_view || 0})" title="View all angles">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                card.onclick = () => addAsset(asset);
+                grid.appendChild(card);
+            });
+
+            document.getElementById('load-more-btn').style.display = state.hasMore ? 'block' : 'none';
+        }
+
+        // ========================================
+        // Asset Palette
+        // ========================================
+        function addAsset(asset) {
+            // Clone the asset to allow multiple instances
+            const newAsset = {...asset, id: Date.now()};
+            state.assetPalette.push(newAsset);
+            renderAssetPalette();
+            updateOccupancy();
+
+            // Start GLB conversion in background (fire-and-forget)
+            // This ensures GLB is ready by the time user clicks Render
+            ensureGlbExists(asset.asset_id);
+        }
+
+        // Start background GLB conversion for an asset (does not block)
+        async function ensureGlbExists(assetId) {
+            try {
+                await fetch('/api/ensure-glb', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({asset_id: assetId}),
+                });
+                // Don't wait for conversion, just kick it off
+            } catch (e) {
+                console.warn(`[GLB] Failed to start conversion for ${assetId}:`, e);
+            }
+        }
+
+        function removeAsset(id) {
+            const asset = state.assetPalette.find(a => a.id == id || a.asset_id === id);
+            state.assetPalette = state.assetPalette.filter(a => a.id != id && a.asset_id !== id);
+            if (asset) {
+                state.canvasItems = state.canvasItems.filter(c => c.assetId !== asset.asset_id);
+            }
+            if (state.selectedItem) {
+                const stillExists = state.canvasItems.some(c => c.instanceId === state.selectedItem);
+                if (!stillExists) state.selectedItem = null;
+            }
+            renderAssetPalette();
+            updateCanvas();
+            updateOccupancy();
+        }
+
+        function renderAssetPalette() {
+            const list = document.getElementById('selected-list');
+            list.innerHTML = '';
+
+            state.assetPalette.forEach(asset => {
+                const item = document.createElement('div');
+                item.className = 'selected-item';
+                item.draggable = true;
+                item.dataset.id = asset.id || asset.asset_id;
+
+                const count = getPlacementCount(asset.asset_id);
+                const badge = count > 0 ? `<span class="badge">${count}</span>` : '';
+
+                /*
+                 * IMPORTANT: Badge visibility depends on HTML structure.
+                 * The badge MUST be a sibling of .name-text, NOT inside it.
+                 * See CSS comment "Badge Visibility Fix for Imported Assets" for details.
+                 *
+                 * CORRECT:   <div class="name"><span class="name-text">Name</span><span class="badge">N</span></div>
+                 * WRONG:     <div class="name"><span class="name-text">Name<span class="badge">N</span></span></div>
+                 * WRONG:     <div class="name">Name<span class="badge">N</span></div>  (no .name-text wrapper)
+                 */
+                item.innerHTML = `
+                    <button class="copy-btn" onclick="event.stopPropagation(); copyAssetId('${asset.asset_id}', this)" title="Copy asset ID">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                        </svg>
+                    </button>
+                    <img src="${asset.preview_url}" alt="${asset.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22/>'">
+                    <div class="info">
+                        <div class="name" title="${asset.name}"><span class="name-text">${asset.name || asset.object_name}</span>${badge}</div>
+                        <div class="dims">${formatBbox(asset.bbox)}</div>
+                    </div>
+                    <button class="eye-btn" onclick="event.stopPropagation(); openViewModal('${asset.asset_id}', ${asset.front_view || 0})" title="View all angles">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </button>
+                    <button class="remove" onclick="removeAsset('${asset.id || asset.asset_id}')">&times;</button>
+                `;
+
+                // Drag to canvas
+                item.ondragstart = (e) => {
+                    e.dataTransfer.setData('asset', JSON.stringify(asset));
+                };
+
+                // Hover to highlight on canvas
+                item.onmouseenter = () => {
+                    state.hoveredAssetId = asset.asset_id;
+                    updateCanvas();
+                };
+                item.onmouseleave = () => {
+                    state.hoveredAssetId = null;
+                    updateCanvas();
+                };
+
+                list.appendChild(item);
+            });
+        }
+
+        function formatBbox(bbox) {
+            if (!bbox) return '-';
+            return `${bbox.x.toFixed(2)}m x ${bbox.z.toFixed(2)}m`;
+        }
+
+        function updateOccupancy() {
+            if (!state.roomConfig) return;
+
+            const [roomW, roomH] = state.roomConfig.room_size;
+            const roomArea = roomW * roomH;
+
+            const totalFootprint = state.canvasItems.reduce((sum, item) => {
+                const asset = findAsset(item.assetId);
+                if (!asset || !asset.bbox) return sum;
+                return sum + (asset.bbox.x * asset.bbox.z);
+            }, 0);
+
+            const pct = Math.min(100, (totalFootprint / roomArea) * 100);
+            document.getElementById('occupancy-pct').textContent = pct.toFixed(1) + '%';
+            document.getElementById('occupancy-fill').style.width = pct + '%';
+        }
+
+        // ========================================
+        // Canvas
+        // ========================================
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // ========================================
+        // Canvas Resizing
+        // ========================================
+        /*
+         * CRITICAL: This function must set BOTH canvas attributes AND canvas.style dimensions.
+         *
+         * BACKGROUND - Canvas has dual sizing:
+         *   - canvas.width / canvas.height (ATTRIBUTES): The pixel buffer resolution.
+         *     This is what ctx.fillRect() etc. draw into. Setting these clears the canvas.
+         *   - canvas.style.width / canvas.style.height (CSS): The display size on screen.
+         *     This stretches/shrinks the buffer to fit, like scaling an image.
+         *
+         * WHY WE SET BOTH EXPLICITLY:
+         *   If we only set the attributes (canvas.width/height) and rely on CSS for display
+         *   sizing (e.g., "width: 100%"), we create a feedback loop with flex layout:
+         *
+         *   The Problem Chain:
+         *     1. Flex container sizes based on content intrinsic size
+         *     2. Canvas intrinsic size comes from its width/height ATTRIBUTES
+         *     3. CSS "height: 100%" makes canvas want to match container
+         *     4. But container height depends on canvas intrinsic size
+         *     5. ResizeObserver fires → sets larger attributes → container grows → repeat
+         *     6. Result: Canvas height explodes to infinity, pushes other elements off-screen
+         *
+         *   The trigger: Shrinking browser width below a threshold causes the feedback
+         *   loop to activate. The layout NEVER recovers even when resizing back.
+         *
+         * THE SOLUTION:
+         *   JavaScript owns ALL canvas sizing. We set explicit pixel values for both
+         *   the buffer (attributes) and display (style). No CSS percentages involved.
+         *   Container sizes via flex layout. Canvas just sits inside at fixed dimensions.
+         *   No circular dependency. No feedback loop. No infinite growth.
+         *
+         * BOUNDS CHECKING:
+         *   - MIN_DIM (200px): Prevents canvas from becoming too small to use, and
+         *     prevents negative dimensions when container is smaller than padding.
+         *   - MAX_DIM (4000px): Browsers have canvas size limits (~268M pixels in Chrome).
+         *     This prevents crashes from runaway sizing edge cases.
+         *
+         * DO NOT:
+         *   - Add CSS "width: 100%" or "height: 100%" to #canvas
+         *   - Remove the canvas.style.width/height lines below
+         *   - Remove the MIN_DIM/MAX_DIM bounds checking
+         */
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            const rect = container.getBoundingClientRect();
+            const padding = 16;
+            const MIN_DIM = 200;
+            const MAX_DIM = 4000;
+
+            const newWidth = Math.max(MIN_DIM, Math.min(MAX_DIM, Math.floor(rect.width - padding)));
+            const newHeight = Math.max(MIN_DIM, Math.min(MAX_DIM, Math.floor(rect.height - padding)));
+
+            if (canvas.width !== newWidth || canvas.height !== newHeight) {
+                // Buffer dimensions (actual pixel resolution for drawing)
+                canvas.width = newWidth;
+                canvas.height = newHeight;
+                // Display dimensions (CSS size on screen) - MUST set explicitly, see comment above
+                canvas.style.width = newWidth + 'px';
+                canvas.style.height = newHeight + 'px';
+                updateCanvas();
+            }
+        }
+
+        const resizeObserver = new ResizeObserver(resizeCanvas);
+        resizeObserver.observe(canvas.parentElement);
+
+        function updateCanvas() {
+            const vt = state.viewTransform;
+
+            // Clear entire canvas
+            ctx.fillStyle = THEME.surface;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            if (!state.roomConfig) {
+                ctx.fillStyle = THEME.slate;
+                ctx.font = '14px system-ui';
+                ctx.textAlign = 'center';
+                ctx.fillText('Generate a room to start', canvas.width / 2, canvas.height / 2);
+                return;
+            }
+
+            const [roomW, roomH] = state.roomConfig.room_size;
+
+            // Room background (transformed)
+            const roomScreen = worldToScreen(0, 0);
+            const roomScreenW = roomW * vt.scale;
+            const roomScreenH = roomH * vt.scale;
+
+            ctx.fillStyle = THEME.white;
+            ctx.fillRect(roomScreen.x, roomScreen.y, roomScreenW, roomScreenH);
+
+            // Room border
+            ctx.strokeStyle = THEME.charcoal;
+            ctx.lineWidth = 2;
+            ctx.strokeRect(roomScreen.x, roomScreen.y, roomScreenW, roomScreenH);
+
+            // Grid (hide when too zoomed out)
+            if (vt.scale > 30) {
+                ctx.strokeStyle = THEME.light;
+                ctx.lineWidth = 1;
+                for (let x = 1; x < roomW; x++) {
+                    const sx = roomScreen.x + x * vt.scale;
+                    ctx.beginPath();
+                    ctx.moveTo(sx, roomScreen.y);
+                    ctx.lineTo(sx, roomScreen.y + roomScreenH);
+                    ctx.stroke();
+                }
+                for (let y = 1; y < roomH; y++) {
+                    const sy = roomScreen.y + y * vt.scale;
+                    ctx.beginPath();
+                    ctx.moveTo(roomScreen.x, sy);
+                    ctx.lineTo(roomScreen.x + roomScreenW, sy);
+                    ctx.stroke();
+                }
+            }
+
+            // Draw placed items
+            state.canvasItems.forEach(item => {
+                const asset = findAsset(item.assetId);
+                if (!asset || !asset.bbox) return;
+
+                const w = asset.bbox.x;
+                const h = asset.bbox.z;
+                const cx = item.x + w / 2;
+                const cy = item.y + h / 2;
+                const screen = worldToScreen(cx, cy);
+                const screenW = w * vt.scale;
+                const screenH = h * vt.scale;
+
+                ctx.save();
+                ctx.translate(screen.x, screen.y);
+                ctx.rotate(item.rotation);
+
+                // Fill
+                const isSelected = item.instanceId === state.selectedItem;
+                const isHovered = item.assetId === state.hoveredAssetId;
+                ctx.fillStyle = isSelected
+                    ? 'rgba(54, 69, 79, 0.25)'
+                    : isHovered
+                        ? 'rgba(74, 144, 217, 0.25)'
+                        : 'rgba(54, 69, 79, 0.15)';
+                ctx.fillRect(-screenW / 2, -screenH / 2, screenW, screenH);
+
+                // Border
+                ctx.strokeStyle = isHovered ? '#4a90d9' : THEME.charcoal;
+                ctx.lineWidth = isSelected ? 3 : isHovered ? 2.5 : 2;
+                ctx.strokeRect(-screenW / 2, -screenH / 2, screenW, screenH);
+
+                // Direction indicator (points +Y, i.e., upward on screen)
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(0, -screenH / 3);
+                ctx.stroke();
+
+                // Label (only if big enough)
+                if (screenW > 40) {
+                    ctx.fillStyle = THEME.charcoal;
+                    ctx.font = '10px system-ui';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(asset.name || asset.object_name || '', 0, 4);
+                }
+
+                ctx.restore();
+
+                // Selection handles
+                if (isSelected) {
+                    const cos = Math.cos(item.rotation);
+                    const sin = Math.sin(item.rotation);
+                    const corners = [
+                        [-screenW / 2, -screenH / 2],
+                        [screenW / 2, -screenH / 2],
+                        [screenW / 2, screenH / 2],
+                        [-screenW / 2, screenH / 2],
+                    ];
+                    ctx.fillStyle = THEME.charcoal;
+                    corners.forEach(([lx, ly]) => {
+                        const rx = lx * cos - ly * sin + screen.x;
+                        const ry = lx * sin + ly * cos + screen.y;
+                        ctx.beginPath();
+                        ctx.arc(rx, ry, 5, 0, 2 * Math.PI);
+                        ctx.fill();
+                    });
+                }
+            });
+        }
+
+        // ========================================
+        // Canvas Event Handlers
+        // ========================================
+        function getCanvasCoords(e) {
+            const rect = canvas.getBoundingClientRect();
+            return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            if (e.button !== 0) return;
+            const { x, y } = getCanvasCoords(e);
+            const hit = hitTest(x, y);
+
+            if (hit) {
+                state.selectedItem = hit.instanceId;
+                state.interaction = {
+                    type: 'drag-item',
+                    instanceId: hit.instanceId,
+                    startX: x,
+                    startY: y,
+                    itemStartX: hit.x,
+                    itemStartY: hit.y,
+                };
+            } else {
+                state.selectedItem = null;
+                state.interaction = {
+                    type: 'drag-canvas',
+                    startX: x,
+                    startY: y,
+                    offsetStartX: state.viewTransform.offsetX,
+                    offsetStartY: state.viewTransform.offsetY,
+                };
+            }
+            updateCanvas();
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (!state.interaction) return;
+            const { x, y } = getCanvasCoords(e);
+            const dx = x - state.interaction.startX;
+            const dy = y - state.interaction.startY;
+
+            if (state.interaction.type === 'drag-item') {
+                const item = findCanvasItem(state.interaction.instanceId);
+                if (!item) return;
+                const worldDx = dx / state.viewTransform.scale;
+                const worldDy = dy / state.viewTransform.scale;
+                item.x = state.interaction.itemStartX + worldDx;
+                item.y = state.interaction.itemStartY + worldDy;
+            } else if (state.interaction.type === 'drag-canvas') {
+                state.viewTransform.offsetX = state.interaction.offsetStartX + dx;
+                state.viewTransform.offsetY = state.interaction.offsetStartY + dy;
+            }
+            updateCanvas();
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            state.interaction = null;
+        });
+
+        canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const { x, y } = getCanvasCoords(e);
+            const vt = state.viewTransform;
+
+            const world = screenToWorld(x, y);
+            const factor = e.deltaY < 0 ? 1.1 : 0.9;
+            const newScale = Math.max(20, Math.min(200, vt.scale * factor));
+
+            vt.offsetX = x - world.x * newScale;
+            vt.offsetY = y - world.y * newScale;
+            vt.scale = newScale;
+
+            updateCanvas();
+        }, { passive: false });
+
+        document.addEventListener('keydown', (e) => {
+            if (!state.selectedItem) return;
+            const item = findCanvasItem(state.selectedItem);
+            if (!item) return;
+
+            if (e.key === 'r' || e.key === 'R') {
+                const step = Math.PI / 12;  // 15 degrees
+                item.rotation += e.shiftKey ? -step : step;
+                item.rotation = ((item.rotation % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+                updateCanvas();
+                e.preventDefault();
+            } else if (e.key === 'Delete' || e.key === 'Backspace') {
+                const idx = state.canvasItems.findIndex(c => c.instanceId === state.selectedItem);
+                if (idx !== -1) state.canvasItems.splice(idx, 1);
+                state.selectedItem = null;
+                updateCanvas();
+                renderAssetPalette();
+                updateOccupancy();
+                e.preventDefault();
+            } else if (e.key === 'Escape') {
+                state.selectedItem = null;
+                updateCanvas();
+            }
+        });
+
+        // Canvas drag-drop from sidebar
+        canvas.ondragover = (e) => e.preventDefault();
+        canvas.ondrop = (e) => {
+            e.preventDefault();
+            const { x, y } = getCanvasCoords(e);
+            const world = screenToWorld(x, y);
+
+            try {
+                const asset = JSON.parse(e.dataTransfer.getData('asset'));
+                state.canvasItems.push({
+                    instanceId: Date.now() + Math.random(),
+                    assetId: asset.asset_id,
+                    x: world.x,
+                    y: world.y,
+                    rotation: 0,
+                });
+                updateCanvas();
+                renderAssetPalette();
+                updateOccupancy();
+            } catch {}
+        };
+
+        function resetView() {
+            const scale = PIXELS_PER_METER;
+            let offsetX = 0, offsetY = 0;
+            if (state.roomConfig) {
+                const [roomW, roomH] = state.roomConfig.room_size;
+                offsetX = (canvas.width - roomW * scale) / 2;
+                offsetY = (canvas.height - roomH * scale) / 2;
+            }
+            state.viewTransform = { scale, offsetX, offsetY };
+            updateCanvas();
+        }
+
+        // ========================================
+        // Export
+        // ========================================
+        function exportBenchmark() {
+            if (!state.roomConfig) {
+                alert('Generate a room first');
+                return;
+            }
+
+            fetch('/api/export', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    prompt: state.roomConfig.prompt,
+                    objects: state.roomConfig.objects,
+                    room_type: state.roomConfig.room_type,
+                    difficulty: state.roomConfig.difficulty,
+                    room_size: state.roomConfig.room_size,
+                    asset_palette: state.canvasItems.map(item => ({asset_id: item.assetId})),
+                    _canvas: btoa(JSON.stringify(state.canvasItems)),
+                }),
+            })
+            .then(r => r.json())
+            .then(data => {
+                const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                const roomType = state.roomConfig.room_type.replace(/ /g, '_');
+                const fmt = n => String(n).replace('.', 'p');
+                const [w, h] = state.roomConfig.room_size;
+                a.download = `${roomType}_${fmt(w)}x${fmt(h)}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+        }
+
+        // ========================================
+        // Import
+        // ========================================
+        async function importBenchmark(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            try {
+                const text = await file.text();
+                const data = JSON.parse(text);
+
+                // Validate required fields
+                if (!data._canvas || !data.room_size || !data.room_type) {
+                    alert('Invalid benchmark file: missing required fields');
+                    return;
+                }
+
+                // Send to backend for validation
+                const resp = await fetch('/api/import', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: text,
+                });
+
+                if (!resp.ok) {
+                    const err = await resp.json();
+                    alert('Import failed: ' + err.error);
+                    return;
+                }
+
+                const result = await resp.json();
+
+                // Restore state
+                state.roomConfig = {
+                    room_type: result.room_type,
+                    room_size: result.room_size,
+                    difficulty: result.difficulty,
+                    prompt: result.prompt,
+                    objects: {},
+                };
+
+                // Build assetPalette from validated metadata
+                state.assetPalette = Object.entries(result.assets).map(([asset_id, meta]) => ({
+                    id: Date.now() + Math.random(),
+                    asset_id,
+                    name: meta.name || asset_id,
+                    bbox: meta.bbox,
+                    front_view: meta.front_view,
+                    preview_url: `/api/asset-preview/${asset_id}`,
+                }));
+
+                // Restore canvas placements
+                state.canvasItems = result.canvas_items;
+
+                // Trigger GLB conversion for all imported assets (background, non-blocking)
+                for (const assetId of Object.keys(result.assets)) {
+                    ensureGlbExists(assetId);
+                }
+
+                // Reset view and update UI
+                state.selectedItem = null;
+
+                document.getElementById('room-type').value = result.room_type;
+                document.getElementById('difficulty').value = result.difficulty;
+                document.getElementById('room-width').value = result.room_size[0];
+                document.getElementById('room-height').value = result.room_size[1];
+                document.getElementById('prompt-display').style.display = 'block';
+                document.getElementById('prompt-text').value = result.prompt;
+                document.getElementById('regenerate-btn').style.display = 'inline-block';
+
+                resetView();
+                renderAssetPalette();
+                updateOccupancy();
+
+            } catch (e) {
+                alert('Import failed: ' + e.message);
+            }
+
+            // Clear file input for re-import
+            event.target.value = '';
+        }
+
+        // ========================================
+        // Blender Render
+        // ========================================
+        const renderState = {
+            jobId: null,
+            currentView: 'top_down',
+            pollInterval: null,
+        };
+
+        function startRender() {
+            if (!state.roomConfig) {
+                alert('Generate a room first');
+                return;
+            }
+            if (state.canvasItems.length === 0) {
+                alert('Place some assets on the canvas first');
+                return;
+            }
+
+            // Show modal with settings panel visible
+            document.getElementById('render-modal').classList.add('active');
+            document.getElementById('render-settings').style.display = 'block';
+            document.getElementById('render-loading').style.display = 'none';
+            document.getElementById('render-content').style.display = 'none';
+            document.getElementById('render-error').style.display = 'none';
+        }
+
+        async function doRender() {
+            // Build render request - transform canvas items to render format
+            const items = state.canvasItems.map(item => {
+                const asset = findAsset(item.assetId);
+                const bboxX = asset?.bbox?.x || 0.5;
+                const bboxZ = asset?.bbox?.z || 0.5;  // z is depth in bbox
+                const bboxY = asset?.bbox?.y || 0.5;  // y is height in bbox
+                return {
+                    asset_id: item.assetId,
+                    // Canvas stores top-left corner; render needs center position
+                    x: item.x + bboxX / 2,
+                    y: item.y + bboxZ / 2,
+                    rotation: item.rotation,
+                    bbox_y: bboxY,  // Height for z-position calculation
+                };
+            });
+
+            // Read settings before starting
+            const disableFloorPlane = document.getElementById('disable-floor-checkbox').checked;
+            const sideViewPosition = parseInt(document.getElementById('side-view-select').value, 10);
+
+            // Hide settings panel, show loading state
+            document.getElementById('render-settings').style.display = 'none';
+            document.getElementById('render-loading').style.display = 'flex';
+
+            try {
+                const resp = await fetch('/api/render', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        room_size: state.roomConfig.room_size,
+                        items: items,
+                        export_blend: true,
+                        disable_floor_plane: disableFloorPlane,
+                        side_view_position: sideViewPosition,
+                    }),
+                });
+
+                const data = await resp.json();
+
+                // Handle GLB conversion states
+                if (resp.status === 202 && data.converting_glbs) {
+                    // Assets are still converting - show friendly message and auto-retry
+                    document.getElementById('render-loading').querySelector('span:last-child').textContent =
+                        `Converting ${data.converting_glbs.length} asset(s) to GLB... Please wait.`;
+                    // Auto-retry in 2 seconds
+                    setTimeout(() => {
+                        if (document.getElementById('render-modal').classList.contains('active')) {
+                            doRender();
+                        }
+                    }, 2000);
+                    return;
+                }
+
+                if (resp.status === 400 && data.missing_glbs) {
+                    // Assets need conversion - trigger it and retry
+                    document.getElementById('render-loading').querySelector('span:last-child').textContent =
+                        `Starting GLB conversion for ${data.missing_glbs.length} asset(s)...`;
+                    // Trigger conversions
+                    for (const assetId of data.missing_glbs) {
+                        ensureGlbExists(assetId);
+                    }
+                    // Auto-retry in 3 seconds (conversion takes time)
+                    setTimeout(() => {
+                        if (document.getElementById('render-modal').classList.contains('active')) {
+                            doRender();
+                        }
+                    }, 3000);
+                    return;
+                }
+
+                if (!resp.ok) {
+                    showRenderError(data.error || 'Unknown error');
+                    return;
+                }
+
+                renderState.jobId = data.job_id;
+
+                // Poll for completion every second
+                renderState.pollInterval = setInterval(pollRenderStatus, 1000);
+
+            } catch (e) {
+                showRenderError('Failed to start render: ' + e.message);
+            }
+        }
+
+        async function pollRenderStatus() {
+            if (!renderState.jobId) return;
+
+            try {
+                const resp = await fetch(`/api/render/${renderState.jobId}`);
+                const data = await resp.json();
+
+                if (data.status === 'complete') {
+                    clearInterval(renderState.pollInterval);
+                    renderState.pollInterval = null;
+                    showRenderResult();
+                } else if (data.status === 'failed') {
+                    clearInterval(renderState.pollInterval);
+                    renderState.pollInterval = null;
+                    showRenderError(data.error || 'Unknown error');
+                }
+                // else: still running, keep polling
+            } catch (e) {
+                clearInterval(renderState.pollInterval);
+                renderState.pollInterval = null;
+                showRenderError('Lost connection: ' + e.message);
+            }
+        }
+
+        function showRenderResult() {
+            document.getElementById('render-loading').style.display = 'none';
+            document.getElementById('render-content').style.display = 'block';
+            renderState.currentView = 'top_down';
+            updateRenderTabs();
+            document.getElementById('render-image').src = `/api/render/${renderState.jobId}/image/top_down`;
+        }
+
+        function showRenderError(msg) {
+            document.getElementById('render-loading').style.display = 'none';
+            document.getElementById('render-error').style.display = 'block';
+            document.getElementById('render-error-msg').textContent = msg;
+        }
+
+        function showRenderView(view) {
+            renderState.currentView = view;
+            updateRenderTabs();
+            document.getElementById('render-image').src = `/api/render/${renderState.jobId}/image/${view}`;
+        }
+
+        function updateRenderTabs() {
+            const tabs = document.querySelectorAll('.render-tab');
+            tabs.forEach(tab => {
+                const isTopDown = tab.textContent.toLowerCase().includes('top');
+                const isActive = (renderState.currentView === 'top_down') === isTopDown;
+                tab.classList.toggle('active', isActive);
+            });
+        }
+
+        function downloadRenderImage() {
+            const a = document.createElement('a');
+            a.href = `/api/render/${renderState.jobId}/image/${renderState.currentView}`;
+            a.download = `render_${renderState.currentView}.png`;
+            a.click();
+        }
+
+        function downloadBlendFile() {
+            const a = document.createElement('a');
+            a.href = `/api/render/${renderState.jobId}/blend`;
+            a.download = 'scene.blend';
+            a.click();
+        }
+
+        function closeRenderModal() {
+            document.getElementById('render-modal').classList.remove('active');
+            document.getElementById('render-settings').style.display = 'block';
+            if (renderState.pollInterval) {
+                clearInterval(renderState.pollInterval);
+                renderState.pollInterval = null;
+            }
+        }
+
+        // Close render modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.getElementById('render-modal').classList.contains('active')) {
+                closeRenderModal();
+            }
+        });
+
+        // Init canvas (resizeCanvas sets dimensions and calls updateCanvas)
+        resizeCanvas();
+    </script>
+</body>
+</html>

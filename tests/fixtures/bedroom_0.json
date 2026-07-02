@@ -1,0 +1,344 @@
+{
+  "constr_json": {
+    "scene_entities": {
+      "independent_objects": [
+        "armchair-0",
+        "coffee-table-0"
+      ],
+      "clusters": [
+        {
+          "cluster_id": "sleeping_area",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "bed-0"
+          },
+          "members": [
+            "bed-0",
+            "wardrobe-0"
+          ]
+        },
+        {
+          "cluster_id": "lounge_area",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "sectional-sofa-0"
+          },
+          "members": [
+            "sectional-sofa-0"
+          ]
+        },
+        {
+          "cluster_id": "workstation",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "office-desk-0"
+          },
+          "members": [
+            "office-desk-0",
+            "gaming-chair-0"
+          ]
+        }
+      ]
+    },
+    "constraints": {
+      "composition": {
+        "against_wall": [
+          {
+            "src_kind": "cluster",
+            "src_id": "sleeping_area",
+            "wall": "T"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "lounge_area",
+            "wall": "B"
+          }
+        ],
+        "corner": [
+          {
+            "src_kind": "cluster",
+            "src_id": "workstation",
+            "corner": "BR",
+            "wall": "R"
+          }
+        ],
+        "horizontal": [
+          {
+            "src_kind": "cluster",
+            "src_id": "sleeping_area",
+            "x": 1.75,
+            "x_param": "sleeping_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "lounge_area",
+            "x": 2.6,
+            "x_param": "lounge_x"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "armchair-0",
+            "x": 5.2,
+            "x_param": "armchair_x"
+          }
+        ],
+        "vertical": []
+      },
+      "cluster_internal": {
+        "sleeping_area": {
+          "facing": [],
+          "left_of": [],
+          "right_of": [
+            {
+              "src_kind": "object",
+              "src_id": "wardrobe-0",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.2,
+              "percentile": 0.0,
+              "clearance_param": "ns_clearance",
+              "percentile_param": "ns_alignment"
+            }
+          ],
+          "in_front_of": [],
+          "behind_of": [],
+          "around": [],
+          "angle": [
+            {
+              "src_kind": "object",
+              "src_id": "wardrobe-0",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "ns_angle"
+            }
+          ]
+        },
+        "lounge_area": {
+          "facing": [],
+          "left_of": [],
+          "right_of": [],
+          "in_front_of": [],
+          "behind_of": [],
+          "around": [],
+          "angle": []
+        },
+        "workstation": {
+          "facing": [
+            {
+              "src_kind": "object",
+              "src_id": "gaming-chair-0",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "mutual": false,
+              "mode": "radial"
+            }
+          ],
+          "left_of": [],
+          "right_of": [],
+          "in_front_of": [
+            {
+              "src_kind": "object",
+              "src_id": "gaming-chair-0",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.3,
+              "percentile": 0.5,
+              "clearance_param": "chair_clearance",
+              "percentile_param": "chair_alignment"
+            }
+          ],
+          "behind_of": [],
+          "around": [],
+          "angle": []
+        }
+      },
+      "scene_relational": {
+        "facing": [
+          {
+            "src_kind": "object",
+            "src_id": "armchair-0",
+            "tar_kind": "object",
+            "tar_id": "coffee-table-0",
+            "mutual": false,
+            "mode": "radial"
+          }
+        ],
+        "left_of": [],
+        "right_of": [],
+        "in_front_of": [
+          {
+            "src_kind": "object",
+            "src_id": "coffee-table-0",
+            "tar_kind": "cluster",
+            "tar_id": "lounge_area",
+            "clearance": 0.2,
+            "percentile": 0.5,
+            "clearance_param": "ct_clearance",
+            "percentile_param": "ct_alignment"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "armchair-0",
+            "tar_kind": "cluster",
+            "tar_id": "lounge_area",
+            "clearance": 0.6,
+            "percentile": 0.5,
+            "clearance_param": "ac_front_clear",
+            "percentile_param": "ac_align"
+          }
+        ],
+        "behind_of": [],
+        "around": [],
+        "angle": [
+          {
+            "src_kind": "object",
+            "src_id": "coffee-table-0",
+            "tar_kind": "cluster",
+            "tar_id": "lounge_area",
+            "angle": 0.0,
+            "angle_param": "ct_align_angle"
+          }
+        ]
+      }
+    },
+    "constraint_params": {
+      "names": [
+        "sleeping_x",
+        "lounge_x",
+        "ns_clearance",
+        "ns_alignment",
+        "ns_angle",
+        "chair_clearance",
+        "chair_alignment",
+        "ct_clearance",
+        "ct_alignment",
+        "ct_align_angle",
+        "ac_front_clear",
+        "ac_align",
+        "armchair_x"
+      ],
+      "priors": [
+        1.75,
+        2.6,
+        0.2,
+        0.0,
+        0.0,
+        0.3,
+        0.5,
+        0.2,
+        0.5,
+        0.0,
+        0.6,
+        0.5,
+        5.2
+      ],
+      "kinds": [
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "unit",
+        "angle_deg",
+        "nonneg",
+        "unit",
+        "nonneg",
+        "unit",
+        "angle_deg",
+        "nonneg",
+        "unit",
+        "nonneg"
+      ]
+    }
+  },
+  "objects": [
+    "sectional-sofa-0",
+    "armchair-0",
+    "bed-0",
+    "wardrobe-0",
+    "office-desk-0",
+    "gaming-chair-0",
+    "coffee-table-0"
+  ],
+  "bbox": {
+    "x": [
+      3.197155475616455,
+      1.4310270547866821,
+      2.063530921936035,
+      1.171172022819519,
+      1.469692349433899,
+      0.6728429794311523,
+      1.0098450183868408
+    ],
+    "y": [
+      1.667741298675537,
+      1.1851409673690796,
+      2.131437063217163,
+      0.5282193422317505,
+      0.780773937702179,
+      0.6551222801208496,
+      1.0187350511550903
+    ],
+    "z": [
+      0.8894412517547607,
+      0.8904615044593811,
+      1.014901041984558,
+      1.7923760414123535,
+      1.2170326709747314,
+      1.3013293743133545,
+      0.4557829797267914
+    ]
+  },
+  "room_size": [
+    6.0,
+    5.0
+  ],
+  "pose": {
+    "x": [
+      2.956031322479248,
+      4.107876300811768,
+      2.2001712322235107,
+      0.5831218957901001,
+      5.611239433288574,
+      4.88317346572876,
+      3.157338857650757
+    ],
+    "y": [
+      0.8339903354644775,
+      3.2032294273376465,
+      3.858973264694214,
+      4.736116409301758,
+      0.7348446846008301,
+      0.7392188906669617,
+      2.280810594558716
+    ],
+    "rz": [
+      -0.0001147974035120569,
+      2.3373610973358154,
+      3.140995740890503,
+      3.1409995555877686,
+      1.570794224739075,
+      4.712304115295411,
+      6.283195972442626
+    ]
+  },
+  "snapshot": {
+    "loss": 2.4255380630493164,
+    "nominal": {
+      "coll_global": 0.00024910984211601317,
+      "coll_local": 0.0,
+      "wall": 2.408944237686228e-05,
+      "aesthetics": 0.0001476961770094931,
+      "against_wall_loss": 1.9527510630723555e-06,
+      "corner_loss": 2.6454754333826713e-06,
+      "horizontal_abs_loss": 1.3378533124923706,
+      "gap_loss": 0.13334640860557556,
+      "right_of_loss": 0.07457107305526733,
+      "angle_loss": 0.0,
+      "fr_loss": 2.47955322265625e-05,
+      "in_front_of_loss": 1.3570871353149414,
+      "prior_unit": 0.0,
+      "prior_nonneg": 0.0,
+      "prior_angle_deg": 0.0
+    }
+  }
+}

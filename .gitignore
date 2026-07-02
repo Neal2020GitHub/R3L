@@ -1,0 +1,24 @@
+__pycache__
+.DS_Store
+*.pdf
+data
+.vscode
+scripts/env.sh
+env.sh
+output
+tmp
+third_party
+.venv
+.pytest_cache
+.env
+*tar.gz
+*tar.xz
+
+# Keep the vendored pure-PyTorch Rotated_IoU package tracked.
+!utils/third_party/
+!utils/third_party/Rotated_IoU/
+!utils/third_party/Rotated_IoU/*.py
+!utils/third_party/Rotated_IoU/README.md
+!utils/third_party/Rotated_IoU/LICENSE
+!utils/third_party/Rotated_IoU/image/
+!utils/third_party/Rotated_IoU/image/**

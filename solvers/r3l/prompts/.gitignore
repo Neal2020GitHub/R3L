@@ -1,0 +1,2 @@
+# generated prompt readouts (rendered from templates/*.j2 at runtime; never the source of truth)
+*.yaml

@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2026 Yuqi Wang and Zhifeng Gu
+Copyright (c) 2020 Lanxiao Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,10 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
--------------------------------------------------------------------------------
-
-This project's own source code is released under the MIT License above.
-Third-party code vendored under separate licenses is documented in
-THIRDPARTY_LICENSES.md (the Apache-2.0 Holodeck-derived holodeck_v2
-subsystem and the MIT-licensed Rotated IoU package).

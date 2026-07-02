@@ -1,0 +1,24 @@
+{#
+  Master template for spatial clustering (and flat mode via not clustered).
+
+  Modes: grouping_mode="none" (flat) or "spatial" (anchor-based clusters)
+#}
+sys: |-
+{%- filter indent(2) %}
+{% include 'components/sys_spatial.j2' %}
+{% endfilter %}
+
+main: |-
+{%- filter indent(2) %}
+{% include 'components/main_spatial.j2' %}
+{% endfilter %}
+
+output_example: |-
+{%- filter indent(2) %}
+{% include 'components/output_example_spatial.j2' %}
+{% endfilter %}
+
+fix_error: |-
+{%- filter indent(2) %}
+{% include 'components/fix_error.j2' %}
+{% endfilter %}

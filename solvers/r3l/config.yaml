@@ -1,0 +1,219 @@
+# =============================================================================
+# R³L Configuration File
+# -----------------------------------------------------------------------------
+# A Pydantic schema (under @solvers/r3l/config.py) is used to defines their
+# TYPES and validates this file at load. An unknown or mistyped key fails LOUDLY
+# at startup, never silently. Sections read top-to-bottom, no cross-referencing.
+# =============================================================================
+
+
+
+# =============================================================================
+# LLM  —  the multimodal model that reasons about the layout
+# -----------------------------------------------------------------------------
+llm:
+  heavy:            "gpt-5-2025-08-07"
+  max_tokens:       64000
+  temperature:      1.0
+  reasoning_effort: high
+# =============================================================================
+
+
+# =============================================================================
+# MODULES  —  R³L's three core components.
+#   decomposition    invariant spatial decomposition
+#   imagination_*    consistent spatial imagination
+#   optimization_*   supportive spatial optimization
+# =============================================================================
+modules:
+  optimization_reparam:  true         # global-to-local re-parameterization
+  imagination_pose:      true         # local + global pose cognitive maps
+  imagination_footprint: true         # footprint / bounds geometric grounding
+  decomposition:         "spatial"    # "spatial": invariant spatial decomp (ours)
+                                      # "semantic": semantic grouping
+# =============================================================================
+
+
+
+# =============================================================================
+# PROMPT  —  how the layout problem is presented to the MLLM
+# -----------------------------------------------------------------------------
+prompt:
+  desc_type:       "short"  # asset description's verbosity: "short" | "long" | "none"
+  include_example: true     # add a simple worked example in the constraint prompt
+  hv_absolute:     true     # true = horizontal/vertical use absolute x/y (m)
+                            # false = use relative room percentile instead
+# =============================================================================
+
+
+
+# =============================================================================
+# SOLVER  —  the two-stage layout optimizer (pipeline.optimize)
+# -----------------------------------------------------------------------------
+# Layout optimization runs in TWO stages, back-to-back:
+#
+#   base     : optimize object POSES only (x, y, rz) with the constraint
+#              (Var) parameters FROZEN at their priors. Attains a stable
+#              layout that fulfills the semantic constraints.
+#   finetune : optimize POSES *and* Var parameters, warm-start from
+#              base's poses. Always runs (base solves the relational
+#              constraints; finetune adds physics + any Var params).
+#
+# The two stages are independent, NAMED blocks with the SAME schema. The only
+# structural difference: finetune's `lr` / `grad_clip_norm` carry an extra
+# `param` role, since it is the only stage with learnable constraint parameters.
+#
+# Each stage owns TWO independent schedulers:
+#   lr_anneal        : anneals the LEARNING RATE across the stage.
+#   physics_schedule : ramps the PHYSICS-constraint weight `alpha`, scales the 
+#                      collision / wall / aesthetics losses. Lets relational
+#                      constraints settle first, before bringing in physics.
+# =============================================================================
+solver:
+
+  base:                          # STAGE 1: poses only, Var params frozen
+    iterations: 600
+    optimizer: "momentum"        # "adam" | "adamw" | "sgd" | "momentum"
+    lr:                          # per-role learning rate (poses only -> no `param`)
+      position: 0.5              #   px, py
+      rotation: 0.3              #   rz
+    grad_clip_norm:              # per-role gradient max-norm; null = no clipping
+      position: 1.0
+      rotation: 0.3
+    lr_anneal:                   # how the LEARNING RATE evolves over `iterations`
+      name: "cosine"             # "cosine" | "onecycle" | "step" | "constant"
+      eta_min: 0                 #   cosine   : floor LR at end of anneal
+      pct_start: 0.3             #   onecycle : fraction of cycle spent rising
+      step_size: 50              #   step     : steps between LR decays
+      gamma: 0.1                 #   step     : multiplicative decay factor
+    physics_schedule:            # how the PHYSICS weight `alpha` evolves
+      shape: "none"              # "none", "linear", "cosine", "quadratic"
+      delay_steps: 0             # hold alpha at `min` this many steps, THEN ramp
+      min: 0.0                   # alpha during the delay / start of the ramp
+      max: 0.0                   # alpha after warmup (peak physics weight)
+
+  finetune:                       # STAGE 2: poses + Var params, warm-started
+    iterations: 600
+    optimizer: "momentum"
+    lr:                          # same schema as base.lr, PLUS `param`
+      position: 0.2
+      rotation: 0.1
+      param: 0.01                #   learning rate for the learnable `Var` params.
+    grad_clip_norm:
+      position: 1.0
+      rotation: 0.3
+      param: null
+    lr_anneal:
+      name: "cosine"
+      eta_min: 0
+      pct_start: 0.3
+      step_size: 50
+      gamma: 0.1
+    physics_schedule:
+      shape: "cosine"
+      delay_steps: 0
+      min: 0.0
+      max: 5.0
+# =============================================================================
+
+
+
+# =============================================================================
+# CONSTRAINTS  —  the objective the solver minimizes
+# -----------------------------------------------------------------------------
+# Three sub-blocks: `weights` (each constraint's RELATIVE magnitude), `shapes`
+# (per-constraint loss tuning), and `learnable_priors` (priors on the optimizable
+# Var parameters). The solver's physics schedule `alpha` additionally multiplies
+# the physics terms (collision / wall / aesthetics).
+# =============================================================================
+constraints:
+
+  # relative strengths
+  weights:
+    collision:     2.00   # normalize M=N(N-1)/2 growth
+    wall:          1.00   # many vertex terms
+    gap:           0.10   # gap_sdf/mtv ~ O(1) per 0.1-0.2 m error
+    distance:      0.10   # squared radial error; halved to match gap
+    directional:   0.75   # two ReLU terms; keep < 1 to avoid overpowering gap
+    against_wall:  3.00   # mix of normal/tangent/rot
+    corner:        1.00   # smooth-OR can amplify; conservative
+    facing_radial: 3.00   # rotation-only; point-to-point alignment
+    facing_ortho:  1.00   # rotation-only; rectilinear alignment to nearest edge
+    facing_wall:   2.50   # rotation-only; ~ facing_ortho
+    around:        2.50   # atan2 gradient ~1/r; upweight to compensate
+    angle:         1.50   # rotation-only; signed yaw offset
+    aesthetics:    0.01   # rotation-only; snap-to-cardinals near target angles
+    horizontal:    1.00   # placement on x
+    vertical:      1.00   # placement on y
+
+  # per-constraint loss shaping (changes the shape & behavior of the constraints)
+  shapes:
+    wall:         { act: "relu2" }
+    collision:    { method: "iou" }               # "iou" | "diou" | "giou"
+    gap:          { method: "sdf" }               # "sdf" | "mtv" | "l2"
+    directional:  { act: "relu2", w_dir: 1.0, w_align: 1.0 }
+    corner:       { w_pos: 1.0, w_rot: 10.0, loss_fn: "l2", huber_delta: 1.0 }  # loss_fn: "l2" | "l1" | "huber"
+    against_wall: { w_pos: 1.0, w_rot: 10.0, loss_fn: "l2", huber_delta: 1.0 }
+    around:       { stable: true, eps: 1.0e-6, w_spacing: 1.0, w_center: 1.0 }  # stable: stable sort or not
+    horizontal:   { loss_fn: "l2", huber_delta: 1.0 }   # plain L2 error to target x
+    vertical:     { loss_fn: "l2", huber_delta: 1.0 }   # plain L2 error to target y
+    aesthetics:                                         # snap rotations to cardinals when near
+      enabled:      true                                # aesthetics loss on/off (was `no_aesthetics`)
+      angles_deg:   [0, 90, 180, -90]
+      eps_deg:      5
+      soft_landing: "smoothstep"                        # "tukey" | "cosine" | "smoothstep"
+
+  # priors regularizing the learnable (Var) constraint parameters
+  learnable_priors:
+    scale_prior: 0.1
+    unit:      { loss: "mse",          weight: 2.0 }   # percentile, alignment      -> [0, 1]
+    nonneg:    { loss: "mse",          weight: 1.0 }   # clearance, distance, sweep -> [0, +inf)
+    angle_deg: { loss: "circular_deg", weight: 1.0 }   # angle (deg), circular prior
+# =============================================================================
+
+
+
+# =============================================================================
+# RUNTIME  —  system & I/O (render config lives under `render`, not here)
+# -----------------------------------------------------------------------------
+runtime:
+  device:      "cpu"   # "cuda" | "cpu" | "mps"
+  seed:        null
+  frame_every: 20       # capture an animation frame every N steps (feeds the process animations)
+  loss_every:  10       # refresh the loss dashboard every N steps
+  loss_rows:   null     # loss dashboard rows: null = all components; int = total + top-(N-1)
+  verbose:     false    # verbose console output
+# =============================================================================
+
+
+
+# =============================================================================
+# RENDER  —  all render/output config: static image + process animation
+# -----------------------------------------------------------------------------
+# Two temporal kinds, siblings:
+#   image      : static finals (image_top.png + image_side.png + scene.blend)
+#   animation  : optimization replay, split by dimensionality:
+#     view_2d  : 2D matplotlib top-down wireframe GIF (fixed top camera)
+#     view_3d  : 3D Blender-Cycles rendered video (top or side camera)
+# -----------------------------------------------------------------------------
+render:
+  image:
+    enabled: true     # final static stills
+
+  animation:
+    fps: 10           # process-animation playback fps (shared by 2D + 3D)
+    
+    view_2d:          # 2D matplotlib top-down animation (fixed top camera)
+      enabled: true
+      palette: ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd",
+                "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
+      fill_alpha:      0.22       # object fill alpha
+      collision_alpha: 0.85       # overlap fill alpha
+      existing_color:  "#b0b0b0"  # existing-pose fallback color
+
+    view_3d:                          # 3D Blender-Cycles animation (single camera, not multi)
+      enabled: true                   
+      stages: ["base", "finetune"]    # which stages to animate
+      camera: "side"                  # "top" | "side" (single; was views: list)
+      format: "gif"                   # "mp4" | "gif"
+# =============================================================================

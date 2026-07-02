@@ -1,0 +1,2396 @@
+{
+  "constr_json": {
+    "scene_entities": {
+      "independent_objects": [
+        "musical-instrument-0",
+        "musical-instrument-1",
+        "music-stand-19",
+        "music-stand-20",
+        "music-stand-21",
+        "music-stand-22",
+        "music-stand-23",
+        "harp-0",
+        "sofa-0",
+        "sofa-1",
+        "grand-piano-0",
+        "musical-instrument-2",
+        "musical-instrument-3",
+        "folding-chair-19",
+        "folding-chair-20",
+        "folding-chair-21",
+        "folding-chair-22",
+        "folding-chair-23"
+      ],
+      "clusters": [
+        {
+          "cluster_id": "r1_bass_L1",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "folding-chair-0"
+          },
+          "members": [
+            "folding-chair-0",
+            "music-stand-0",
+            "double-bass-0"
+          ]
+        },
+        {
+          "cluster_id": "r1_bass_L2",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "folding-chair-1"
+          },
+          "members": [
+            "folding-chair-1",
+            "music-stand-1",
+            "double-bass-1"
+          ]
+        },
+        {
+          "cluster_id": "r1_vln_C1",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "folding-chair-2"
+          },
+          "members": [
+            "folding-chair-2",
+            "music-stand-2"
+          ]
+        },
+        {
+          "cluster_id": "r1_vln_C2",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "folding-chair-3"
+          },
+          "members": [
+            "folding-chair-3",
+            "music-stand-3"
+          ]
+        },
+        {
+          "cluster_id": "r1_cello_R1",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "folding-chair-4"
+          },
+          "members": [
+            "folding-chair-4",
+            "music-stand-4",
+            "cello-0"
+          ]
+        },
+        {
+          "cluster_id": "r1_cello_R2",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "folding-chair-5"
+          },
+          "members": [
+            "folding-chair-5",
+            "music-stand-5",
+            "cello-1"
+          ]
+        },
+        {
+          "cluster_id": "r2_bass_L1",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "folding-chair-6"
+          },
+          "members": [
+            "folding-chair-6",
+            "music-stand-6",
+            "double-bass-2"
+          ]
+        },
+        {
+          "cluster_id": "r2_bass_L2",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "folding-chair-7"
+          },
+          "members": [
+            "folding-chair-7",
+            "music-stand-7",
+            "double-bass-3"
+          ]
+        },
+        {
+          "cluster_id": "r2_vln_C1",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "folding-chair-8"
+          },
+          "members": [
+            "folding-chair-8",
+            "music-stand-8"
+          ]
+        },
+        {
+          "cluster_id": "r2_vln_C2",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "folding-chair-9"
+          },
+          "members": [
+            "folding-chair-9",
+            "music-stand-9"
+          ]
+        },
+        {
+          "cluster_id": "r2_cello_R1",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "folding-chair-10"
+          },
+          "members": [
+            "folding-chair-10",
+            "music-stand-10",
+            "cello-2"
+          ]
+        },
+        {
+          "cluster_id": "r2_cello_R2",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "folding-chair-11"
+          },
+          "members": [
+            "folding-chair-11",
+            "music-stand-11",
+            "cello-3"
+          ]
+        },
+        {
+          "cluster_id": "r3_bass_L1",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "folding-chair-12"
+          },
+          "members": [
+            "folding-chair-12",
+            "music-stand-12",
+            "double-bass-4"
+          ]
+        },
+        {
+          "cluster_id": "r3_bass_L2",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "folding-chair-13"
+          },
+          "members": [
+            "folding-chair-13",
+            "music-stand-13",
+            "double-bass-5"
+          ]
+        },
+        {
+          "cluster_id": "r3_vln_C1",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "folding-chair-14"
+          },
+          "members": [
+            "folding-chair-14",
+            "music-stand-14"
+          ]
+        },
+        {
+          "cluster_id": "r3_vln_C2",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "folding-chair-15"
+          },
+          "members": [
+            "folding-chair-15",
+            "music-stand-15"
+          ]
+        },
+        {
+          "cluster_id": "r3_cello_R1",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "folding-chair-16"
+          },
+          "members": [
+            "folding-chair-16",
+            "music-stand-16",
+            "cello-4"
+          ]
+        },
+        {
+          "cluster_id": "r3_cello_R2",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "folding-chair-17"
+          },
+          "members": [
+            "folding-chair-17",
+            "music-stand-17",
+            "cello-5"
+          ]
+        },
+        {
+          "cluster_id": "drum_station",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "drum-set-0"
+          },
+          "members": [
+            "drum-set-0",
+            "folding-chair-18",
+            "music-stand-18"
+          ]
+        }
+      ]
+    },
+    "constraints": {
+      "composition": {
+        "against_wall": [
+          {
+            "src_kind": "cluster",
+            "src_id": "drum_station",
+            "wall": "T"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "sofa-0",
+            "wall": "B"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "sofa-1",
+            "wall": "B"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "musical-instrument-0",
+            "wall": "R"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "musical-instrument-1",
+            "wall": "R"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "musical-instrument-2",
+            "wall": "R"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "musical-instrument-3",
+            "wall": "R"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "folding-chair-19",
+            "wall": "L"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "folding-chair-20",
+            "wall": "L"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "folding-chair-21",
+            "wall": "L"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "folding-chair-22",
+            "wall": "L"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "folding-chair-23",
+            "wall": "L"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "music-stand-19",
+            "wall": "L"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "music-stand-20",
+            "wall": "L"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "music-stand-21",
+            "wall": "L"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "music-stand-22",
+            "wall": "L"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "music-stand-23",
+            "wall": "L"
+          }
+        ],
+        "corner": [
+          {
+            "src_kind": "object",
+            "src_id": "harp-0",
+            "corner": "TL",
+            "wall": "L"
+          }
+        ],
+        "horizontal": [
+          {
+            "src_kind": "object",
+            "src_id": "grand-piano-0",
+            "x": 5.5,
+            "x_param": "center_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "drum_station",
+            "x": 5.5,
+            "x_param": "drum_x"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "sofa-0",
+            "x": 2.2,
+            "x_param": "sofa_left_x"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "sofa-1",
+            "x": 8.8,
+            "x_param": "sofa_right_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r1_bass_L1",
+            "x": 3.053,
+            "x_param": "r1_bass_L1_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r1_bass_L2",
+            "x": 3.95,
+            "x_param": "r1_bass_L2_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r1_vln_C1",
+            "x": 5.031,
+            "x_param": "r1_vln_C1_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r1_vln_C2",
+            "x": 5.969,
+            "x_param": "r1_vln_C2_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r1_cello_R1",
+            "x": 7.05,
+            "x_param": "r1_cello_R1_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r1_cello_R2",
+            "x": 7.947,
+            "x_param": "r1_cello_R2_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r2_bass_L1",
+            "x": 2.148,
+            "x_param": "r2_bass_L1_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r2_bass_L2",
+            "x": 3.121,
+            "x_param": "r2_bass_L2_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r2_vln_C1",
+            "x": 3.936,
+            "x_param": "r2_vln_C1_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r2_vln_C2",
+            "x": 7.064,
+            "x_param": "r2_vln_C2_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r2_cello_R1",
+            "x": 7.879,
+            "x_param": "r2_cello_R1_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r2_cello_R2",
+            "x": 8.852,
+            "x_param": "r2_cello_R2_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r3_bass_L1",
+            "x": 1.24,
+            "x_param": "r3_bass_L1_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r3_bass_L2",
+            "x": 2.177,
+            "x_param": "r3_bass_L2_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r3_vln_C1",
+            "x": 2.802,
+            "x_param": "r3_vln_C1_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r3_vln_C2",
+            "x": 8.198,
+            "x_param": "r3_vln_C2_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r3_cello_R1",
+            "x": 8.823,
+            "x_param": "r3_cello_R1_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r3_cello_R2",
+            "x": 9.76,
+            "x_param": "r3_cello_R2_x"
+          }
+        ],
+        "vertical": [
+          {
+            "src_kind": "object",
+            "src_id": "grand-piano-0",
+            "y": 1.6,
+            "y_param": "piano_y"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "musical-instrument-0",
+            "y": 7.2,
+            "y_param": "mi0_y"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "musical-instrument-1",
+            "y": 6.2,
+            "y_param": "mi1_y"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "musical-instrument-2",
+            "y": 5.2,
+            "y_param": "tuba2_y"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "musical-instrument-3",
+            "y": 4.2,
+            "y_param": "tuba3_y"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "folding-chair-19",
+            "y": 1.0,
+            "y_param": "fc19_y"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "folding-chair-20",
+            "y": 1.6,
+            "y_param": "fc20_y"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "folding-chair-21",
+            "y": 2.2,
+            "y_param": "fc21_y"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "folding-chair-22",
+            "y": 2.8,
+            "y_param": "fc22_y"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "folding-chair-23",
+            "y": 3.4,
+            "y_param": "fc23_y"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "music-stand-19",
+            "y": 4.2,
+            "y_param": "ms19_y"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "music-stand-20",
+            "y": 4.9,
+            "y_param": "ms20_y"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "music-stand-21",
+            "y": 5.6,
+            "y_param": "ms21_y"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "music-stand-22",
+            "y": 6.3,
+            "y_param": "ms22_y"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "music-stand-23",
+            "y": 7.0,
+            "y_param": "ms23_y"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r1_bass_L1",
+            "y": 2.741,
+            "y_param": "r1_bass_L1_y"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r1_bass_L2",
+            "y": 3.812,
+            "y_param": "r1_bass_L2_y"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r1_vln_C1",
+            "y": 4.259,
+            "y_param": "r1_vln_C1_y"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r1_vln_C2",
+            "y": 4.259,
+            "y_param": "r1_vln_C2_y"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r1_cello_R1",
+            "y": 3.812,
+            "y_param": "r1_cello_R1_y"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r1_cello_R2",
+            "y": 2.741,
+            "y_param": "r1_cello_R2_y"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r2_bass_L1",
+            "y": 3.164,
+            "y_param": "r2_bass_L1_y"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r2_bass_L2",
+            "y": 4.434,
+            "y_param": "r2_bass_L2_y"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r2_vln_C1",
+            "y": 4.953,
+            "y_param": "r2_vln_C1_y"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r2_vln_C2",
+            "y": 4.953,
+            "y_param": "r2_vln_C2_y"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r2_cello_R1",
+            "y": 4.434,
+            "y_param": "r2_cello_R1_y"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r2_cello_R2",
+            "y": 3.164,
+            "y_param": "r2_cello_R2_y"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r3_bass_L1",
+            "y": 3.585,
+            "y_param": "r3_bass_L1_y"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r3_bass_L2",
+            "y": 4.923,
+            "y_param": "r3_bass_L2_y"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r3_vln_C1",
+            "y": 5.451,
+            "y_param": "r3_vln_C1_y"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r3_vln_C2",
+            "y": 5.451,
+            "y_param": "r3_vln_C2_y"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r3_cello_R1",
+            "y": 4.923,
+            "y_param": "r3_cello_R1_y"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r3_cello_R2",
+            "y": 3.585,
+            "y_param": "r3_cello_R2_y"
+          }
+        ]
+      },
+      "cluster_internal": {
+        "r1_bass_L1": {
+          "facing": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-0",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "mutual": false,
+              "mode": "radial"
+            }
+          ],
+          "left_of": [
+            {
+              "src_kind": "object",
+              "src_id": "double-bass-0",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.2,
+              "percentile": 0.5,
+              "clearance_param": "side_inst_clear",
+              "percentile_param": "side_align"
+            }
+          ],
+          "right_of": [],
+          "in_front_of": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-0",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.35,
+              "percentile": 0.5,
+              "clearance_param": "ms_clear",
+              "percentile_param": "_anon_alignment_64"
+            }
+          ],
+          "behind_of": [],
+          "around": [],
+          "angle": [
+            {
+              "src_kind": "object",
+              "src_id": "double-bass-0",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "inst_align_angle"
+            }
+          ]
+        },
+        "r1_bass_L2": {
+          "facing": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-1",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "mutual": false,
+              "mode": "radial"
+            }
+          ],
+          "left_of": [
+            {
+              "src_kind": "object",
+              "src_id": "double-bass-1",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.2,
+              "percentile": 0.5,
+              "clearance_param": "side_inst_clear",
+              "percentile_param": "side_align"
+            }
+          ],
+          "right_of": [],
+          "in_front_of": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-1",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.35,
+              "percentile": 0.5,
+              "clearance_param": "ms_clear",
+              "percentile_param": "_anon_alignment_65"
+            }
+          ],
+          "behind_of": [],
+          "around": [],
+          "angle": [
+            {
+              "src_kind": "object",
+              "src_id": "double-bass-1",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "inst_align_angle"
+            }
+          ]
+        },
+        "r1_vln_C1": {
+          "facing": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-2",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "mutual": false,
+              "mode": "radial"
+            }
+          ],
+          "left_of": [],
+          "right_of": [],
+          "in_front_of": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-2",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.35,
+              "percentile": 0.5,
+              "clearance_param": "ms_clear",
+              "percentile_param": "stand_align"
+            }
+          ],
+          "behind_of": [],
+          "around": [],
+          "angle": []
+        },
+        "r1_vln_C2": {
+          "facing": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-3",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "mutual": false,
+              "mode": "radial"
+            }
+          ],
+          "left_of": [],
+          "right_of": [],
+          "in_front_of": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-3",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.35,
+              "percentile": 0.5,
+              "clearance_param": "ms_clear",
+              "percentile_param": "stand_align"
+            }
+          ],
+          "behind_of": [],
+          "around": [],
+          "angle": []
+        },
+        "r1_cello_R1": {
+          "facing": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-4",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "mutual": false,
+              "mode": "radial"
+            }
+          ],
+          "left_of": [],
+          "right_of": [
+            {
+              "src_kind": "object",
+              "src_id": "cello-0",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.2,
+              "percentile": 0.5,
+              "clearance_param": "side_inst_clear",
+              "percentile_param": "side_align"
+            }
+          ],
+          "in_front_of": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-4",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.35,
+              "percentile": 0.5,
+              "clearance_param": "ms_clear",
+              "percentile_param": "stand_align"
+            }
+          ],
+          "behind_of": [],
+          "around": [],
+          "angle": [
+            {
+              "src_kind": "object",
+              "src_id": "cello-0",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "inst_align_angle"
+            }
+          ]
+        },
+        "r1_cello_R2": {
+          "facing": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-5",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "mutual": false,
+              "mode": "radial"
+            }
+          ],
+          "left_of": [],
+          "right_of": [
+            {
+              "src_kind": "object",
+              "src_id": "cello-1",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.2,
+              "percentile": 0.5,
+              "clearance_param": "side_inst_clear",
+              "percentile_param": "side_align"
+            }
+          ],
+          "in_front_of": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-5",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.35,
+              "percentile": 0.5,
+              "clearance_param": "ms_clear",
+              "percentile_param": "stand_align"
+            }
+          ],
+          "behind_of": [],
+          "around": [],
+          "angle": [
+            {
+              "src_kind": "object",
+              "src_id": "cello-1",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "inst_align_angle"
+            }
+          ]
+        },
+        "r2_bass_L1": {
+          "facing": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-6",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "mutual": false,
+              "mode": "radial"
+            }
+          ],
+          "left_of": [
+            {
+              "src_kind": "object",
+              "src_id": "double-bass-2",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.2,
+              "percentile": 0.5,
+              "clearance_param": "side_inst_clear",
+              "percentile_param": "side_align"
+            }
+          ],
+          "right_of": [],
+          "in_front_of": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-6",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.35,
+              "percentile": 0.5,
+              "clearance_param": "ms_clear",
+              "percentile_param": "stand_align"
+            }
+          ],
+          "behind_of": [],
+          "around": [],
+          "angle": [
+            {
+              "src_kind": "object",
+              "src_id": "double-bass-2",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "inst_align_angle"
+            }
+          ]
+        },
+        "r2_bass_L2": {
+          "facing": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-7",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "mutual": false,
+              "mode": "radial"
+            }
+          ],
+          "left_of": [
+            {
+              "src_kind": "object",
+              "src_id": "double-bass-3",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.2,
+              "percentile": 0.5,
+              "clearance_param": "side_inst_clear",
+              "percentile_param": "side_align"
+            }
+          ],
+          "right_of": [],
+          "in_front_of": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-7",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.35,
+              "percentile": 0.5,
+              "clearance_param": "ms_clear",
+              "percentile_param": "stand_align"
+            }
+          ],
+          "behind_of": [],
+          "around": [],
+          "angle": [
+            {
+              "src_kind": "object",
+              "src_id": "double-bass-3",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "inst_align_angle"
+            }
+          ]
+        },
+        "r2_vln_C1": {
+          "facing": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-8",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "mutual": false,
+              "mode": "radial"
+            }
+          ],
+          "left_of": [],
+          "right_of": [],
+          "in_front_of": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-8",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.35,
+              "percentile": 0.5,
+              "clearance_param": "ms_clear",
+              "percentile_param": "stand_align"
+            }
+          ],
+          "behind_of": [],
+          "around": [],
+          "angle": []
+        },
+        "r2_vln_C2": {
+          "facing": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-9",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "mutual": false,
+              "mode": "radial"
+            }
+          ],
+          "left_of": [],
+          "right_of": [],
+          "in_front_of": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-9",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.35,
+              "percentile": 0.5,
+              "clearance_param": "ms_clear",
+              "percentile_param": "stand_align"
+            }
+          ],
+          "behind_of": [],
+          "around": [],
+          "angle": []
+        },
+        "r2_cello_R1": {
+          "facing": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-10",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "mutual": false,
+              "mode": "radial"
+            }
+          ],
+          "left_of": [],
+          "right_of": [
+            {
+              "src_kind": "object",
+              "src_id": "cello-2",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.2,
+              "percentile": 0.5,
+              "clearance_param": "side_inst_clear",
+              "percentile_param": "side_align"
+            }
+          ],
+          "in_front_of": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-10",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.35,
+              "percentile": 0.5,
+              "clearance_param": "ms_clear",
+              "percentile_param": "stand_align"
+            }
+          ],
+          "behind_of": [],
+          "around": [],
+          "angle": [
+            {
+              "src_kind": "object",
+              "src_id": "cello-2",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "inst_align_angle"
+            }
+          ]
+        },
+        "r2_cello_R2": {
+          "facing": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-11",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "mutual": false,
+              "mode": "radial"
+            }
+          ],
+          "left_of": [],
+          "right_of": [
+            {
+              "src_kind": "object",
+              "src_id": "cello-3",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.2,
+              "percentile": 0.5,
+              "clearance_param": "side_inst_clear",
+              "percentile_param": "side_align"
+            }
+          ],
+          "in_front_of": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-11",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.35,
+              "percentile": 0.5,
+              "clearance_param": "ms_clear",
+              "percentile_param": "stand_align"
+            }
+          ],
+          "behind_of": [],
+          "around": [],
+          "angle": [
+            {
+              "src_kind": "object",
+              "src_id": "cello-3",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "inst_align_angle"
+            }
+          ]
+        },
+        "r3_bass_L1": {
+          "facing": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-12",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "mutual": false,
+              "mode": "radial"
+            }
+          ],
+          "left_of": [
+            {
+              "src_kind": "object",
+              "src_id": "double-bass-4",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.2,
+              "percentile": 0.5,
+              "clearance_param": "side_inst_clear",
+              "percentile_param": "side_align"
+            }
+          ],
+          "right_of": [],
+          "in_front_of": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-12",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.35,
+              "percentile": 0.5,
+              "clearance_param": "ms_clear",
+              "percentile_param": "stand_align"
+            }
+          ],
+          "behind_of": [],
+          "around": [],
+          "angle": [
+            {
+              "src_kind": "object",
+              "src_id": "double-bass-4",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "inst_align_angle"
+            }
+          ]
+        },
+        "r3_bass_L2": {
+          "facing": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-13",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "mutual": false,
+              "mode": "radial"
+            }
+          ],
+          "left_of": [
+            {
+              "src_kind": "object",
+              "src_id": "double-bass-5",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.2,
+              "percentile": 0.5,
+              "clearance_param": "side_inst_clear",
+              "percentile_param": "side_align"
+            }
+          ],
+          "right_of": [],
+          "in_front_of": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-13",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.35,
+              "percentile": 0.5,
+              "clearance_param": "ms_clear",
+              "percentile_param": "stand_align"
+            }
+          ],
+          "behind_of": [],
+          "around": [],
+          "angle": [
+            {
+              "src_kind": "object",
+              "src_id": "double-bass-5",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "inst_align_angle"
+            }
+          ]
+        },
+        "r3_vln_C1": {
+          "facing": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-14",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "mutual": false,
+              "mode": "radial"
+            }
+          ],
+          "left_of": [],
+          "right_of": [],
+          "in_front_of": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-14",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.35,
+              "percentile": 0.5,
+              "clearance_param": "ms_clear",
+              "percentile_param": "stand_align"
+            }
+          ],
+          "behind_of": [],
+          "around": [],
+          "angle": []
+        },
+        "r3_vln_C2": {
+          "facing": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-15",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "mutual": false,
+              "mode": "radial"
+            }
+          ],
+          "left_of": [],
+          "right_of": [],
+          "in_front_of": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-15",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.35,
+              "percentile": 0.5,
+              "clearance_param": "ms_clear",
+              "percentile_param": "stand_align"
+            }
+          ],
+          "behind_of": [],
+          "around": [],
+          "angle": []
+        },
+        "r3_cello_R1": {
+          "facing": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-16",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "mutual": false,
+              "mode": "radial"
+            }
+          ],
+          "left_of": [],
+          "right_of": [
+            {
+              "src_kind": "object",
+              "src_id": "cello-4",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.2,
+              "percentile": 0.5,
+              "clearance_param": "side_inst_clear",
+              "percentile_param": "side_align"
+            }
+          ],
+          "in_front_of": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-16",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.35,
+              "percentile": 0.5,
+              "clearance_param": "ms_clear",
+              "percentile_param": "stand_align"
+            }
+          ],
+          "behind_of": [],
+          "around": [],
+          "angle": [
+            {
+              "src_kind": "object",
+              "src_id": "cello-4",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "inst_align_angle"
+            }
+          ]
+        },
+        "r3_cello_R2": {
+          "facing": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-17",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "mutual": false,
+              "mode": "radial"
+            }
+          ],
+          "left_of": [],
+          "right_of": [
+            {
+              "src_kind": "object",
+              "src_id": "cello-5",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.2,
+              "percentile": 0.5,
+              "clearance_param": "side_inst_clear",
+              "percentile_param": "side_align"
+            }
+          ],
+          "in_front_of": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-17",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.35,
+              "percentile": 0.5,
+              "clearance_param": "ms_clear",
+              "percentile_param": "stand_align"
+            }
+          ],
+          "behind_of": [],
+          "around": [],
+          "angle": [
+            {
+              "src_kind": "object",
+              "src_id": "cello-5",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "inst_align_angle"
+            }
+          ]
+        },
+        "drum_station": {
+          "facing": [
+            {
+              "src_kind": "object",
+              "src_id": "folding-chair-18",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "mutual": false,
+              "mode": "ortho"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-18",
+              "tar_kind": "object",
+              "tar_id": "folding-chair-18",
+              "mutual": false,
+              "mode": "radial"
+            }
+          ],
+          "left_of": [],
+          "right_of": [
+            {
+              "src_kind": "object",
+              "src_id": "music-stand-18",
+              "tar_kind": "object",
+              "tar_id": "folding-chair-18",
+              "clearance": 0.25,
+              "percentile": 0.0,
+              "clearance_param": "ds_stand_side",
+              "percentile_param": "_anon_alignment_67"
+            }
+          ],
+          "in_front_of": [],
+          "behind_of": [
+            {
+              "src_kind": "object",
+              "src_id": "folding-chair-18",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.5,
+              "percentile": 0.5,
+              "clearance_param": "ds_chair_clear",
+              "percentile_param": "_anon_alignment_66"
+            }
+          ],
+          "around": [],
+          "angle": []
+        }
+      },
+      "scene_relational": {
+        "facing": [
+          {
+            "src_kind": "cluster",
+            "src_id": "r1_bass_L1",
+            "tar_kind": "object",
+            "tar_id": "grand-piano-0",
+            "mutual": false,
+            "mode": "radial"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r1_bass_L2",
+            "tar_kind": "object",
+            "tar_id": "grand-piano-0",
+            "mutual": false,
+            "mode": "radial"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r1_vln_C1",
+            "tar_kind": "object",
+            "tar_id": "grand-piano-0",
+            "mutual": false,
+            "mode": "radial"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r1_vln_C2",
+            "tar_kind": "object",
+            "tar_id": "grand-piano-0",
+            "mutual": false,
+            "mode": "radial"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r1_cello_R1",
+            "tar_kind": "object",
+            "tar_id": "grand-piano-0",
+            "mutual": false,
+            "mode": "radial"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r1_cello_R2",
+            "tar_kind": "object",
+            "tar_id": "grand-piano-0",
+            "mutual": false,
+            "mode": "radial"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r2_bass_L1",
+            "tar_kind": "object",
+            "tar_id": "grand-piano-0",
+            "mutual": false,
+            "mode": "radial"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r2_bass_L2",
+            "tar_kind": "object",
+            "tar_id": "grand-piano-0",
+            "mutual": false,
+            "mode": "radial"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r2_vln_C1",
+            "tar_kind": "object",
+            "tar_id": "grand-piano-0",
+            "mutual": false,
+            "mode": "radial"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r2_vln_C2",
+            "tar_kind": "object",
+            "tar_id": "grand-piano-0",
+            "mutual": false,
+            "mode": "radial"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r2_cello_R1",
+            "tar_kind": "object",
+            "tar_id": "grand-piano-0",
+            "mutual": false,
+            "mode": "radial"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r2_cello_R2",
+            "tar_kind": "object",
+            "tar_id": "grand-piano-0",
+            "mutual": false,
+            "mode": "radial"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r3_bass_L1",
+            "tar_kind": "object",
+            "tar_id": "grand-piano-0",
+            "mutual": false,
+            "mode": "radial"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r3_bass_L2",
+            "tar_kind": "object",
+            "tar_id": "grand-piano-0",
+            "mutual": false,
+            "mode": "radial"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r3_vln_C1",
+            "tar_kind": "object",
+            "tar_id": "grand-piano-0",
+            "mutual": false,
+            "mode": "radial"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r3_vln_C2",
+            "tar_kind": "object",
+            "tar_id": "grand-piano-0",
+            "mutual": false,
+            "mode": "radial"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r3_cello_R1",
+            "tar_kind": "object",
+            "tar_id": "grand-piano-0",
+            "mutual": false,
+            "mode": "radial"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "r3_cello_R2",
+            "tar_kind": "object",
+            "tar_id": "grand-piano-0",
+            "mutual": false,
+            "mode": "radial"
+          }
+        ],
+        "left_of": [],
+        "right_of": [],
+        "in_front_of": [],
+        "behind_of": [],
+        "around": [],
+        "angle": [
+          {
+            "src_kind": "object",
+            "src_id": "grand-piano-0",
+            "tar_kind": "cluster",
+            "tar_id": "drum_station",
+            "angle": 180.0,
+            "angle_param": "piano_face_up_angle"
+          }
+        ]
+      }
+    },
+    "constraint_params": {
+      "names": [
+        "center_x",
+        "piano_y",
+        "drum_x",
+        "ms_clear",
+        "side_inst_clear",
+        "stand_align",
+        "side_align",
+        "inst_align_angle",
+        "ds_chair_clear",
+        "ds_stand_side",
+        "sofa_left_x",
+        "sofa_right_x",
+        "mi0_y",
+        "mi1_y",
+        "tuba2_y",
+        "tuba3_y",
+        "fc19_y",
+        "fc20_y",
+        "fc21_y",
+        "fc22_y",
+        "fc23_y",
+        "ms19_y",
+        "ms20_y",
+        "ms21_y",
+        "ms22_y",
+        "ms23_y",
+        "piano_face_up_angle",
+        "r1_bass_L1_x",
+        "r1_bass_L1_y",
+        "r1_bass_L2_x",
+        "r1_bass_L2_y",
+        "r1_vln_C1_x",
+        "r1_vln_C1_y",
+        "r1_vln_C2_x",
+        "r1_vln_C2_y",
+        "r1_cello_R1_x",
+        "r1_cello_R1_y",
+        "r1_cello_R2_x",
+        "r1_cello_R2_y",
+        "r2_bass_L1_x",
+        "r2_bass_L1_y",
+        "r2_bass_L2_x",
+        "r2_bass_L2_y",
+        "r2_vln_C1_x",
+        "r2_vln_C1_y",
+        "r2_vln_C2_x",
+        "r2_vln_C2_y",
+        "r2_cello_R1_x",
+        "r2_cello_R1_y",
+        "r2_cello_R2_x",
+        "r2_cello_R2_y",
+        "r3_bass_L1_x",
+        "r3_bass_L1_y",
+        "r3_bass_L2_x",
+        "r3_bass_L2_y",
+        "r3_vln_C1_x",
+        "r3_vln_C1_y",
+        "r3_vln_C2_x",
+        "r3_vln_C2_y",
+        "r3_cello_R1_x",
+        "r3_cello_R1_y",
+        "r3_cello_R2_x",
+        "r3_cello_R2_y",
+        "_anon_alignment_64",
+        "_anon_alignment_65",
+        "_anon_alignment_66",
+        "_anon_alignment_67"
+      ],
+      "priors": [
+        5.5,
+        1.6,
+        5.5,
+        0.35,
+        0.2,
+        0.5,
+        0.5,
+        0.0,
+        0.5,
+        0.25,
+        2.2,
+        8.8,
+        7.2,
+        6.2,
+        5.2,
+        4.2,
+        1.0,
+        1.6,
+        2.2,
+        2.8,
+        3.4,
+        4.2,
+        4.9,
+        5.6,
+        6.3,
+        7.0,
+        180.0,
+        3.053,
+        2.741,
+        3.95,
+        3.812,
+        5.031,
+        4.259,
+        5.969,
+        4.259,
+        7.05,
+        3.812,
+        7.947,
+        2.741,
+        2.148,
+        3.164,
+        3.121,
+        4.434,
+        3.936,
+        4.953,
+        7.064,
+        4.953,
+        7.879,
+        4.434,
+        8.852,
+        3.164,
+        1.24,
+        3.585,
+        2.177,
+        4.923,
+        2.802,
+        5.451,
+        8.198,
+        5.451,
+        8.823,
+        4.923,
+        9.76,
+        3.585,
+        0.5,
+        0.5,
+        0.5,
+        0.0
+      ],
+      "kinds": [
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "unit",
+        "unit",
+        "angle_deg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "angle_deg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "unit",
+        "unit",
+        "unit",
+        "unit"
+      ]
+    }
+  },
+  "objects": [
+    "musical-instrument-0",
+    "musical-instrument-1",
+    "music-stand-0",
+    "music-stand-1",
+    "music-stand-2",
+    "music-stand-3",
+    "music-stand-4",
+    "music-stand-5",
+    "music-stand-6",
+    "music-stand-7",
+    "music-stand-8",
+    "music-stand-9",
+    "music-stand-10",
+    "music-stand-11",
+    "music-stand-12",
+    "music-stand-13",
+    "music-stand-14",
+    "music-stand-15",
+    "music-stand-16",
+    "music-stand-17",
+    "music-stand-18",
+    "music-stand-19",
+    "music-stand-20",
+    "music-stand-21",
+    "music-stand-22",
+    "music-stand-23",
+    "harp-0",
+    "sofa-0",
+    "sofa-1",
+    "grand-piano-0",
+    "double-bass-0",
+    "double-bass-1",
+    "double-bass-2",
+    "double-bass-3",
+    "double-bass-4",
+    "double-bass-5",
+    "musical-instrument-2",
+    "musical-instrument-3",
+    "folding-chair-0",
+    "folding-chair-1",
+    "folding-chair-2",
+    "folding-chair-3",
+    "folding-chair-4",
+    "folding-chair-5",
+    "folding-chair-6",
+    "folding-chair-7",
+    "folding-chair-8",
+    "folding-chair-9",
+    "folding-chair-10",
+    "folding-chair-11",
+    "folding-chair-12",
+    "folding-chair-13",
+    "folding-chair-14",
+    "folding-chair-15",
+    "folding-chair-16",
+    "folding-chair-17",
+    "folding-chair-18",
+    "folding-chair-19",
+    "folding-chair-20",
+    "folding-chair-21",
+    "folding-chair-22",
+    "folding-chair-23",
+    "drum-set-0",
+    "cello-0",
+    "cello-1",
+    "cello-2",
+    "cello-3",
+    "cello-4",
+    "cello-5"
+  ],
+  "bbox": {
+    "x": [
+      0.33419638872146606,
+      0.33419638872146606,
+      0.7743324041366577,
+      0.7743324041366577,
+      0.7743324041366577,
+      0.7743324041366577,
+      0.7743324041366577,
+      0.7743324041366577,
+      0.7743324041366577,
+      0.7743324041366577,
+      0.7743324041366577,
+      0.7743324041366577,
+      0.7743324041366577,
+      0.7743324041366577,
+      0.7743324041366577,
+      0.7743324041366577,
+      0.7743324041366577,
+      0.7743324041366577,
+      0.7743324041366577,
+      0.7743324041366577,
+      0.7743324041366577,
+      0.7743324041366577,
+      0.7743324041366577,
+      0.7743324041366577,
+      0.7743324041366577,
+      0.7743324041366577,
+      1.20659601688385,
+      2.30180025100708,
+      2.30180025100708,
+      1.5983057022094727,
+      0.7059340476989746,
+      0.7059340476989746,
+      0.7059340476989746,
+      0.7059340476989746,
+      0.7059340476989746,
+      0.7059340476989746,
+      0.5546963810920715,
+      0.5546963810920715,
+      0.4649948477745056,
+      0.4649948477745056,
+      0.4649948477745056,
+      0.4649948477745056,
+      0.4649948477745056,
+      0.4649948477745056,
+      0.4649948477745056,
+      0.4649948477745056,
+      0.4649948477745056,
+      0.4649948477745056,
+      0.4649948477745056,
+      0.4649948477745056,
+      0.4649948477745056,
+      0.4649948477745056,
+      0.4649948477745056,
+      0.4649948477745056,
+      0.4649948477745056,
+      0.4649948477745056,
+      0.4649948477745056,
+      0.4649948477745056,
+      0.4649948477745056,
+      0.4649948477745056,
+      0.4649948477745056,
+      0.4649948477745056,
+      2.4343318939208984,
+      0.4404281973838806,
+      0.4404281973838806,
+      0.4404281973838806,
+      0.4404281973838806,
+      0.4404281973838806,
+      0.4404281973838806
+    ],
+    "y": [
+      0.453957200050354,
+      0.453957200050354,
+      0.4078654646873474,
+      0.4078654646873474,
+      0.4078654646873474,
+      0.4078654646873474,
+      0.4078654646873474,
+      0.4078654646873474,
+      0.4078654646873474,
+      0.4078654646873474,
+      0.4078654646873474,
+      0.4078654646873474,
+      0.4078654646873474,
+      0.4078654646873474,
+      0.4078654646873474,
+      0.4078654646873474,
+      0.4078654646873474,
+      0.4078654646873474,
+      0.4078654646873474,
+      0.4078654646873474,
+      0.4078654646873474,
+      0.4078654646873474,
+      0.4078654646873474,
+      0.4078654646873474,
+      0.4078654646873474,
+      0.4078654646873474,
+      0.277870237827301,
+      0.8364759683609009,
+      0.8364759683609009,
+      2.397858142852783,
+      0.4706230163574219,
+      0.4706230163574219,
+      0.4706230163574219,
+      0.4706230163574219,
+      0.4706230163574219,
+      0.4706230163574219,
+      0.44006308913230896,
+      0.44006308913230896,
+      0.44999897480010986,
+      0.44999897480010986,
+      0.44999897480010986,
+      0.44999897480010986,
+      0.44999897480010986,
+      0.44999897480010986,
+      0.44999897480010986,
+      0.44999897480010986,
+      0.44999897480010986,
+      0.44999897480010986,
+      0.44999897480010986,
+      0.44999897480010986,
+      0.44999897480010986,
+      0.44999897480010986,
+      0.44999897480010986,
+      0.44999897480010986,
+      0.44999897480010986,
+      0.44999897480010986,
+      0.44999897480010986,
+      0.44999897480010986,
+      0.44999897480010986,
+      0.44999897480010986,
+      0.44999897480010986,
+      0.44999897480010986,
+      1.711059331893921,
+      0.7594213485717773,
+      0.7594213485717773,
+      0.7594213485717773,
+      0.7594213485717773,
+      0.7594213485717773,
+      0.7594213485717773
+    ],
+    "z": [
+      0.5033500790596008,
+      0.5033500790596008,
+      1.5049009323120117,
+      1.5049009323120117,
+      1.5049009323120117,
+      1.5049009323120117,
+      1.5049009323120117,
+      1.5049009323120117,
+      1.5049009323120117,
+      1.5049009323120117,
+      1.5049009323120117,
+      1.5049009323120117,
+      1.5049009323120117,
+      1.5049009323120117,
+      1.5049009323120117,
+      1.5049009323120117,
+      1.5049009323120117,
+      1.5049009323120117,
+      1.5049009323120117,
+      1.5049009323120117,
+      1.5049009323120117,
+      1.5049009323120117,
+      1.5049009323120117,
+      1.5049009323120117,
+      1.5049009323120117,
+      1.5049009323120117,
+      1.5021822452545166,
+      0.7282428741455078,
+      0.7282428741455078,
+      1.0168060064315796,
+      1.811842918395996,
+      1.811842918395996,
+      1.811842918395996,
+      1.811842918395996,
+      1.811842918395996,
+      1.811842918395996,
+      1.0071446895599365,
+      1.0071446895599365,
+      0.8049980401992798,
+      0.8049980401992798,
+      0.8049980401992798,
+      0.8049980401992798,
+      0.8049980401992798,
+      0.8049980401992798,
+      0.8049980401992798,
+      0.8049980401992798,
+      0.8049980401992798,
+      0.8049980401992798,
+      0.8049980401992798,
+      0.8049980401992798,
+      0.8049980401992798,
+      0.8049980401992798,
+      0.8049980401992798,
+      0.8049980401992798,
+      0.8049980401992798,
+      0.8049980401992798,
+      0.8049980401992798,
+      0.8049980401992798,
+      0.8049980401992798,
+      0.8049980401992798,
+      0.8049980401992798,
+      0.8049980401992798,
+      1.5223174095153809,
+      1.2074755430221558,
+      1.2074755430221558,
+      1.2074755430221558,
+      1.2074755430221558,
+      1.2074755430221558,
+      1.2074755430221558
+    ]
+  },
+  "room_size": [
+    11.0,
+    8.0
+  ],
+  "pose": {
+    "x": [
+      10.773021697998047,
+      10.773021697998047,
+      3.216749906539917,
+      3.8746609687805176,
+      5.115101337432861,
+      5.95765495300293,
+      7.137560844421387,
+      7.820069313049316,
+      2.3416833877563477,
+      3.195405960083008,
+      4.087643146514893,
+      6.980568885803223,
+      7.930787563323975,
+      8.72515869140625,
+      1.4332780838012695,
+      2.2784976959228516,
+      2.993133783340454,
+      8.070117950439453,
+      8.839494705200195,
+      9.63325023651123,
+      4.899267196655273,
+      0.2039327323436737,
+      0.2039327323436737,
+      0.2039327323436737,
+      0.2039327323436737,
+      0.2039327323436737,
+      0.1389351189136505,
+      2.200000047683716,
+      8.800000190734863,
+      5.5,
+      2.9289391040802,
+      4.067575454711914,
+      1.9295806884765625,
+      3.096790313720703,
+      1.0213550329208374,
+      2.1128733158111572,
+      10.77996826171875,
+      10.77996826171875,
+      2.632868528366089,
+      3.505145311355591,
+      4.744079113006592,
+      5.816213130950928,
+      7.302340030670166,
+      8.308204650878906,
+      1.6328858137130737,
+      2.5696282386779785,
+      3.5711519718170166,
+      7.023992538452148,
+      8.156009674072266,
+      9.214091300964355,
+      0.7248958349227905,
+      1.624921202659607,
+      2.3990936279296875,
+      8.235396385192871,
+      9.121489524841309,
+      10.122274398803711,
+      5.695549964904785,
+      0.22499948740005493,
+      0.22499948740005493,
+      0.22499948740005493,
+      0.22499948740005493,
+      0.22499948740005493,
+      5.500063896179199,
+      6.766483306884766,
+      7.93797492980957,
+      7.638099670410156,
+      8.843217849731445,
+      8.625509262084961,
+      9.75066089630127
+    ],
+    "y": [
+      7.199999809265137,
+      6.199999809265137,
+      2.3097455501556396,
+      3.3540244102478027,
+      3.99257493019104,
+      3.978546619415283,
+      3.4084017276763916,
+      2.346844434738159,
+      2.9234275817871094,
+      4.133648872375488,
+      4.716912746429443,
+      4.685110092163086,
+      4.022307872772217,
+      2.7687599658966064,
+      3.344581365585327,
+      4.629342079162598,
+      5.244535446166992,
+      5.201991081237793,
+      4.508843421936035,
+      3.189892530441284,
+      7.578590393066406,
+      4.199999809265137,
+      4.900000095367432,
+      5.599999904632568,
+      6.300000190734863,
+      7.0,
+      7.396701812744141,
+      0.41823798418045044,
+      0.41823798418045044,
+      1.600000023841858,
+      3.1893343925476074,
+      4.264626979827881,
+      3.575408935546875,
+      4.899692058563232,
+      3.9962940216064453,
+      5.384385585784912,
+      5.199999809265137,
+      4.199999809265137,
+      2.5778048038482666,
+      3.8827383518218994,
+      4.599729537963867,
+      4.676872730255127,
+      4.09826135635376,
+      2.8622207641601562,
+      2.9641354084014893,
+      4.470710277557373,
+      5.2067718505859375,
+      5.395630836486816,
+      4.696904182434082,
+      3.285330057144165,
+      3.3848652839660645,
+      4.91137170791626,
+      5.637537479400635,
+      5.8943023681640625,
+      5.160697937011719,
+      3.706425428390503,
+      7.753816604614258,
+      1.0,
+      1.600000023841858,
+      2.200000047683716,
+      2.799999952316284,
+      3.4000000953674316,
+      6.15861701965332,
+      4.285739898681641,
+      3.29274845123291,
+      4.930447101593018,
+      3.7157089710235596,
+      5.438018321990967,
+      4.136870384216309
+    ],
+    "rz": [
+      1.5707963705062866,
+      1.5707963705062866,
+      1.140113353729248,
+      0.6104159355163574,
+      6.8343048095703125,
+      6.483133316040039,
+      -0.2333383560180664,
+      5.524848937988281,
+      7.796045303344727,
+      1.0773003101348877,
+      7.095993518829347,
+      -0.06008720397949219,
+      -0.3229844570159912,
+      -0.7589313983917236,
+      1.5133726596832275,
+      1.1633338928222658,
+      7.2689971923828125,
+      -0.23278427124023438,
+      -0.40825533866882324,
+      -0.757683515548706,
+      4.929725646972655,
+      4.71238899230957,
+      4.71238899230957,
+      4.71238899230957,
+      4.71238899230957,
+      -1.5707963705062866,
+      4.71238899230957,
+      2.1719169015058455e-30,
+      6.2831854820251465,
+      2.3841765539600604e-07,
+      4.276837348937988,
+      3.7533092498779297,
+      -2.0076193809509277,
+      3.839552640914917,
+      -2.0068085193634033,
+      3.927155017852783,
+      1.5707963705062866,
+      1.5707963705062866,
+      4.276812553405762,
+      3.7533850669860844,
+      3.3131835460662837,
+      2.9638872146606445,
+      2.527597188949585,
+      2.0042459964752197,
+      4.275794506072998,
+      3.8396000862121586,
+      3.575790643692017,
+      -3.5802910327911377,
+      2.4410924911499023,
+      2.0051941871643066,
+      -2.0068492889404297,
+      3.926957368850708,
+      3.7508840560913086,
+      2.5289816856384277,
+      2.354470491409302,
+      2.005183696746826,
+      3.1466741561889644,
+      4.71238899230957,
+      4.71238899230957,
+      4.71238899230957,
+      4.71238899230957,
+      4.71238899230957,
+      3.1415927410125732,
+      -3.755517721176147,
+      2.0041377544403076,
+      2.4408946037292485,
+      -4.278188705444336,
+      2.354750871658325,
+      2.005159378051758
+    ]
+  },
+  "snapshot": {
+    "loss": 8.264054298400879,
+    "nominal": {
+      "coll_global": 2.073847770690918,
+      "coll_local": 0.0,
+      "wall": 7.75633509420004e-07,
+      "aesthetics": 0.0197052750736475,
+      "against_wall_loss": 3.872230536217103e-07,
+      "corner_loss": 0.0,
+      "horizontal_abs_loss": 0.0003927426296286285,
+      "vertical_abs_loss": 0.0005230307579040527,
+      "fr_loss": 8.106231689453125e-06,
+      "fo_loss": 1.2934207916259766e-05,
+      "gap_loss": 0.48401618003845215,
+      "left_of_loss": 0.062348514795303345,
+      "right_of_loss": 0.9580196738243103,
+      "in_front_of_loss": 4.2065510749816895,
+      "behind_of_loss": 0.19548620283603668,
+      "angle_loss": 5.960464477539063e-08,
+      "prior_unit": 0.0,
+      "prior_nonneg": 0.0,
+      "prior_angle_deg": 0.0
+    }
+  }
+}

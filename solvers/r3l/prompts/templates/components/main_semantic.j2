@@ -1,0 +1,99 @@
+You will be given the user requirement, the room size, and a list of assets to be placed. You must place all the assets in the list into the room using the constraints provided. You must NOT leave any objects unplaced.
+
+Write a constraint program using the provided ConstraintSolver API.
+These constraints will be converted into differentiable geometric losses and jointly optimized via gradient descent.
+
+------------------------------------------------------------
+PROCEDURE
+------------------------------------------------------------
+
+Step 1 — Decomposition & Grouping
+- Read all inputs and form a holistic mental picture of the scene.
+- Identify **semantic groups** (functionally related objects that should be constrained together).
+- For each group: list MEMBERS (no anchor needed—all members are equal).
+- Identify INDEPENDENT assets (objects not belonging to any group).
+{% if cognitive_map %}- Mentally estimate all positions in ROOM coordinates.
+{% endif %}
+
+Step 2 — Constraint Specification
+**For EACH group:**
+1. **Room Constraints Available:** Use against_wall, corner, horizontal, vertical as needed.
+2. **Member Arrangement:** Specify relational constraints among members.
+3. **Scope Rule:** Reference ONLY members of this group and room—not outside objects.
+{% if cognitive_map %}
+{% if volumetric_grounding %}4. **Spatial Scaffold:** For EACH member, compute `.footprint` → `.pose` → `.bounds` (global coordinates).
+{% else %}4. **Pose Estimation:** For EACH member, estimate `.pose` in global coordinates.
+{% endif %}
+{% endif %}
+
+**For EACH independent asset:**
+1. **Room Placement:** Use room constraints as needed.
+2. **Relational Constraints:** Reference other independent objects only (not group members).
+{% if cognitive_map %}
+{% if volumetric_grounding %}3. **Spatial Scaffold:** Compute `.footprint` → `.pose` → `.bounds` (global coordinates).
+{% else %}3. **Pose Estimation:** Estimate `.pose` in global coordinates.
+{% endif %}
+{% endif %}
+
+Step 3 — Validation
+{% if cognitive_map %}
+{% if volumetric_grounding %}- **Finalize Scaffold:** Verify `.footprint`, `.pose`, `.bounds` for ALL assets.
+- **Collision Check:** Confirm no overlapping `.bounds` between any pair.
+{% else %}- **Finalize Cognitive Map:** Assign `asset.pose = Pose(x, y, rz)` for ALL assets.
+- Verify estimated poses are geometrically compatible with the constraints.
+{% endif %}
+{% else %}- Validate constraints are geometrically plausible given object sizes and room dimensions.
+{% endif %}- **Coverage Check:**
+  - EVERY group member has ≥1 position + ≥1 orientation constraint.
+  - EVERY independent asset has ≥1 position + ≥1 orientation constraint.
+- **Scope Hygiene:** Group members referenced ONLY inside their group block.
+- **Semantic Check:** Look at all constraints holistically—does the scene look realistic, coherent, and aesthetic?
+- **Circulation Check:** Verify that each zone is accessible with no blockage.
+- **Accessibility Check:** Verify ALL operable asset's functional fronts are NOT occluded.
+
+Step 4 — Backtracking
+- If ANY validation checks in Step 3 failed, BACKTRACK to Step 1 and REPEAT the process until ALL issues have been resolved.
+
+------------------------------------------------------------
+OUTPUT FORMAT (STRICT)
+------------------------------------------------------------
+
+1. First output a short high-level reasoning summary (3-8 bullet points).
+2. Then output ONLY the constraint program in a single ```python ...``` block.
+    - Do NOT output any text after the python code block.
+    - Do NOT repeat the class definitions.
+    - Do NOT re-initialize the provided assets.
+    - Do NOT overwrite asset variables; reference exactly the provided variable names/ids.
+    - Add brief comments in code when helpful.
+3. All constraint function calls MUST explicitly specify ALL parameters, including those with default values.
+4. Do NOT use loops (for/while/etc.) in the constraint program.
+5. Do NOT define helper variables/constants EXCEPT for:
+    - `room = Room(length=length, width=width)`
+    - `walls = {...}`
+    - `<name> = Var(<prior>)` declarations
+    - Group blocks via `with solver.group(group_id=..., members=[...]):`
+{% if cognitive_map %}
+{% if volumetric_grounding %}    - Scaffold chain: `.footprint = Footprint(...)`, `.pose = Pose(...)`, `.bounds = Bounds(...)`
+{% else %}    - Pose assignments: `asset.pose = Pose(...)`
+{% endif %}
+{%- endif %}
+6. ALL numeric parameters MUST be Var references, NOT raw literals.
+{% if cognitive_map %}{% if volumetric_grounding %}7. For EACH `.pose =`, precede with `.footprint =` and follow with `.bounds =` (3-step scaffold).{% endif %}{% endif %}
+
+## Output Example
+$output_example
+
+------------------------------------------------------------
+INPUTS
+------------------------------------------------------------
+
+## User Requirements
+$requirement
+
+## Room Size (length x width)
+$length m x $width m
+
+## Assets List
+```python
+$asset_list_str
+```

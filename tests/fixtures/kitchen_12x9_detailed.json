@@ -1,0 +1,1371 @@
+{
+  "constr_json": {
+    "scene_entities": {
+      "independent_objects": [
+        "deep-fryer-0",
+        "kitchen-0",
+        "kitchen-1",
+        "refrigerator-0",
+        "barbecue-grill-0",
+        "barbecue-grill-1"
+      ],
+      "clusters": [
+        {
+          "cluster_id": "station_A",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "electric-stove-0"
+          },
+          "members": [
+            "electric-stove-0",
+            "electric-stove-1",
+            "workbench-6",
+            "workbench-7",
+            "trash-bin-0",
+            "trash-bin-1"
+          ]
+        },
+        {
+          "cluster_id": "station_B",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "electric-stove-2"
+          },
+          "members": [
+            "electric-stove-2",
+            "electric-stove-3",
+            "workbench-8",
+            "workbench-9",
+            "trash-bin-2",
+            "trash-bin-3"
+          ]
+        },
+        {
+          "cluster_id": "station_C",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "electric-stove-4"
+          },
+          "members": [
+            "electric-stove-4",
+            "electric-stove-5",
+            "workbench-10",
+            "workbench-11",
+            "trash-bin-4",
+            "trash-bin-5"
+          ]
+        },
+        {
+          "cluster_id": "station_D",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "electric-stove-6"
+          },
+          "members": [
+            "electric-stove-6",
+            "electric-stove-7",
+            "workbench-12",
+            "workbench-13",
+            "trash-bin-6",
+            "trash-bin-7"
+          ]
+        },
+        {
+          "cluster_id": "plating_area",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "workbench-0"
+          },
+          "members": [
+            "workbench-0",
+            "workbench-1",
+            "workbench-2",
+            "workbench-3",
+            "workbench-4",
+            "workbench-5"
+          ]
+        },
+        {
+          "cluster_id": "display_stack",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "display-rack-0"
+          },
+          "members": [
+            "display-rack-0",
+            "display-rack-1",
+            "display-rack-2",
+            "display-rack-3"
+          ]
+        },
+        {
+          "cluster_id": "cart_row",
+          "anchor": {
+            "anchor_kind": "object",
+            "anchor_object_id": "shopping-cart-1"
+          },
+          "members": [
+            "shopping-cart-0",
+            "shopping-cart-1",
+            "shopping-cart-2"
+          ]
+        }
+      ]
+    },
+    "constraints": {
+      "composition": {
+        "against_wall": [
+          {
+            "src_kind": "object",
+            "src_id": "kitchen-0",
+            "wall": "L"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "kitchen-1",
+            "wall": "L"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "barbecue-grill-0",
+            "wall": "R"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "barbecue-grill-1",
+            "wall": "R"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "deep-fryer-0",
+            "wall": "R"
+          }
+        ],
+        "corner": [
+          {
+            "src_kind": "object",
+            "src_id": "refrigerator-0",
+            "corner": "BR",
+            "wall": "R"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "display_stack",
+            "corner": "BL",
+            "wall": "L"
+          }
+        ],
+        "horizontal": [
+          {
+            "src_kind": "cluster",
+            "src_id": "station_A",
+            "x": 5.5,
+            "x_param": "station_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "station_B",
+            "x": 5.5,
+            "x_param": "station_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "station_C",
+            "x": 5.5,
+            "x_param": "station_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "station_D",
+            "x": 5.5,
+            "x_param": "station_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "plating_area",
+            "x": 10.2,
+            "x_param": "plating_x"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "cart_row",
+            "x": 6.0,
+            "x_param": "carts_x"
+          }
+        ],
+        "vertical": [
+          {
+            "src_kind": "cluster",
+            "src_id": "station_A",
+            "y": 5.8,
+            "y_param": "stationA_y"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "station_C",
+            "y": 3.3,
+            "y_param": "stationC_y"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "plating_area",
+            "y": 4.5,
+            "y_param": "plating_y"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "kitchen-0",
+            "y": 7.3,
+            "y_param": "kitchen0_y"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "kitchen-1",
+            "y": 3.8,
+            "y_param": "kitchen1_y"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "barbecue-grill-0",
+            "y": 3.7,
+            "y_param": "grill0_y"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "barbecue-grill-1",
+            "y": 6.9,
+            "y_param": "grill1_y"
+          },
+          {
+            "src_kind": "object",
+            "src_id": "deep-fryer-0",
+            "y": 8.74,
+            "y_param": "fryer_y"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "cart_row",
+            "y": 0.8,
+            "y_param": "carts_y"
+          }
+        ]
+      },
+      "cluster_internal": {
+        "station_A": {
+          "facing": [],
+          "left_of": [
+            {
+              "src_kind": "object",
+              "src_id": "workbench-6",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.0,
+              "percentile": 0.0,
+              "clearance_param": "zero",
+              "percentile_param": "back_align"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "trash-bin-0",
+              "tar_kind": "object",
+              "tar_id": "workbench-6",
+              "clearance": 0.0,
+              "percentile": 0.0,
+              "clearance_param": "zero",
+              "percentile_param": "back_align"
+            }
+          ],
+          "right_of": [
+            {
+              "src_kind": "object",
+              "src_id": "electric-stove-1",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.0,
+              "percentile": 0.0,
+              "clearance_param": "zero",
+              "percentile_param": "back_align"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "workbench-7",
+              "tar_kind": "object",
+              "tar_id": "electric-stove-1",
+              "clearance": 0.0,
+              "percentile": 0.0,
+              "clearance_param": "zero",
+              "percentile_param": "back_align"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "trash-bin-1",
+              "tar_kind": "object",
+              "tar_id": "workbench-7",
+              "clearance": 0.0,
+              "percentile": 0.0,
+              "clearance_param": "zero",
+              "percentile_param": "back_align"
+            }
+          ],
+          "in_front_of": [],
+          "behind_of": [],
+          "around": [],
+          "angle": [
+            {
+              "src_kind": "object",
+              "src_id": "electric-stove-1",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "workbench-6",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "workbench-7",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "trash-bin-0",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "trash-bin-1",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            }
+          ]
+        },
+        "station_B": {
+          "facing": [],
+          "left_of": [
+            {
+              "src_kind": "object",
+              "src_id": "workbench-8",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.0,
+              "percentile": 0.0,
+              "clearance_param": "zero",
+              "percentile_param": "back_align"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "trash-bin-2",
+              "tar_kind": "object",
+              "tar_id": "workbench-8",
+              "clearance": 0.0,
+              "percentile": 0.0,
+              "clearance_param": "zero",
+              "percentile_param": "back_align"
+            }
+          ],
+          "right_of": [
+            {
+              "src_kind": "object",
+              "src_id": "electric-stove-3",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.0,
+              "percentile": 0.0,
+              "clearance_param": "zero",
+              "percentile_param": "back_align"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "workbench-9",
+              "tar_kind": "object",
+              "tar_id": "electric-stove-3",
+              "clearance": 0.0,
+              "percentile": 0.0,
+              "clearance_param": "zero",
+              "percentile_param": "back_align"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "trash-bin-3",
+              "tar_kind": "object",
+              "tar_id": "workbench-9",
+              "clearance": 0.0,
+              "percentile": 0.0,
+              "clearance_param": "zero",
+              "percentile_param": "back_align"
+            }
+          ],
+          "in_front_of": [],
+          "behind_of": [],
+          "around": [],
+          "angle": [
+            {
+              "src_kind": "object",
+              "src_id": "electric-stove-3",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "workbench-8",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "workbench-9",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "trash-bin-2",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "trash-bin-3",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            }
+          ]
+        },
+        "station_C": {
+          "facing": [],
+          "left_of": [
+            {
+              "src_kind": "object",
+              "src_id": "workbench-10",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.0,
+              "percentile": 0.0,
+              "clearance_param": "zero",
+              "percentile_param": "back_align"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "trash-bin-4",
+              "tar_kind": "object",
+              "tar_id": "workbench-10",
+              "clearance": 0.0,
+              "percentile": 0.0,
+              "clearance_param": "zero",
+              "percentile_param": "back_align"
+            }
+          ],
+          "right_of": [
+            {
+              "src_kind": "object",
+              "src_id": "electric-stove-5",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.0,
+              "percentile": 0.0,
+              "clearance_param": "zero",
+              "percentile_param": "back_align"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "workbench-11",
+              "tar_kind": "object",
+              "tar_id": "electric-stove-5",
+              "clearance": 0.0,
+              "percentile": 0.0,
+              "clearance_param": "zero",
+              "percentile_param": "back_align"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "trash-bin-5",
+              "tar_kind": "object",
+              "tar_id": "workbench-11",
+              "clearance": 0.0,
+              "percentile": 0.0,
+              "clearance_param": "zero",
+              "percentile_param": "back_align"
+            }
+          ],
+          "in_front_of": [],
+          "behind_of": [],
+          "around": [],
+          "angle": [
+            {
+              "src_kind": "object",
+              "src_id": "electric-stove-5",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "workbench-10",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "workbench-11",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "trash-bin-4",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "trash-bin-5",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            }
+          ]
+        },
+        "station_D": {
+          "facing": [],
+          "left_of": [
+            {
+              "src_kind": "object",
+              "src_id": "workbench-12",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.0,
+              "percentile": 0.0,
+              "clearance_param": "zero",
+              "percentile_param": "back_align"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "trash-bin-6",
+              "tar_kind": "object",
+              "tar_id": "workbench-12",
+              "clearance": 0.0,
+              "percentile": 0.0,
+              "clearance_param": "zero",
+              "percentile_param": "back_align"
+            }
+          ],
+          "right_of": [
+            {
+              "src_kind": "object",
+              "src_id": "electric-stove-7",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.0,
+              "percentile": 0.0,
+              "clearance_param": "zero",
+              "percentile_param": "back_align"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "workbench-13",
+              "tar_kind": "object",
+              "tar_id": "electric-stove-7",
+              "clearance": 0.0,
+              "percentile": 0.0,
+              "clearance_param": "zero",
+              "percentile_param": "back_align"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "trash-bin-7",
+              "tar_kind": "object",
+              "tar_id": "workbench-13",
+              "clearance": 0.0,
+              "percentile": 0.0,
+              "clearance_param": "zero",
+              "percentile_param": "back_align"
+            }
+          ],
+          "in_front_of": [],
+          "behind_of": [],
+          "around": [],
+          "angle": [
+            {
+              "src_kind": "object",
+              "src_id": "electric-stove-7",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "workbench-12",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "workbench-13",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "trash-bin-6",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "trash-bin-7",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            }
+          ]
+        },
+        "plating_area": {
+          "facing": [],
+          "left_of": [],
+          "right_of": [
+            {
+              "src_kind": "object",
+              "src_id": "workbench-1",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.0,
+              "percentile": 0.0,
+              "clearance_param": "zero",
+              "percentile_param": "back_align"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "workbench-2",
+              "tar_kind": "object",
+              "tar_id": "workbench-1",
+              "clearance": 0.0,
+              "percentile": 0.0,
+              "clearance_param": "zero",
+              "percentile_param": "back_align"
+            }
+          ],
+          "in_front_of": [],
+          "behind_of": [
+            {
+              "src_kind": "object",
+              "src_id": "workbench-3",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.0,
+              "percentile": 0.5,
+              "clearance_param": "zero",
+              "percentile_param": "center_align_fb"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "workbench-4",
+              "tar_kind": "object",
+              "tar_id": "workbench-1",
+              "clearance": 0.0,
+              "percentile": 0.5,
+              "clearance_param": "zero",
+              "percentile_param": "center_align_fb"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "workbench-5",
+              "tar_kind": "object",
+              "tar_id": "workbench-2",
+              "clearance": 0.0,
+              "percentile": 0.5,
+              "clearance_param": "zero",
+              "percentile_param": "center_align_fb"
+            }
+          ],
+          "around": [],
+          "angle": [
+            {
+              "src_kind": "object",
+              "src_id": "workbench-1",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "workbench-2",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "workbench-3",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 180.0,
+              "angle_param": "angle_180"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "workbench-4",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 180.0,
+              "angle_param": "angle_180"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "workbench-5",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 180.0,
+              "angle_param": "angle_180"
+            }
+          ]
+        },
+        "display_stack": {
+          "facing": [],
+          "left_of": [],
+          "right_of": [],
+          "in_front_of": [
+            {
+              "src_kind": "object",
+              "src_id": "display-rack-1",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.0,
+              "percentile": 0.5,
+              "clearance_param": "zero",
+              "percentile_param": "center_align_fb"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "display-rack-2",
+              "tar_kind": "object",
+              "tar_id": "display-rack-1",
+              "clearance": 0.0,
+              "percentile": 0.5,
+              "clearance_param": "zero",
+              "percentile_param": "center_align_fb"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "display-rack-3",
+              "tar_kind": "object",
+              "tar_id": "display-rack-2",
+              "clearance": 0.0,
+              "percentile": 0.5,
+              "clearance_param": "zero",
+              "percentile_param": "center_align_fb"
+            }
+          ],
+          "behind_of": [],
+          "around": [],
+          "angle": [
+            {
+              "src_kind": "object",
+              "src_id": "display-rack-1",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "display-rack-2",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "display-rack-3",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            }
+          ]
+        },
+        "cart_row": {
+          "facing": [],
+          "left_of": [
+            {
+              "src_kind": "object",
+              "src_id": "shopping-cart-0",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.3,
+              "percentile": 0.5,
+              "clearance_param": "cart_gap",
+              "percentile_param": "center_align_lr"
+            }
+          ],
+          "right_of": [
+            {
+              "src_kind": "object",
+              "src_id": "shopping-cart-2",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "clearance": 0.3,
+              "percentile": 0.5,
+              "clearance_param": "cart_gap",
+              "percentile_param": "center_align_lr"
+            }
+          ],
+          "in_front_of": [],
+          "behind_of": [],
+          "around": [],
+          "angle": [
+            {
+              "src_kind": "object",
+              "src_id": "shopping-cart-0",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            },
+            {
+              "src_kind": "object",
+              "src_id": "shopping-cart-2",
+              "tar_kind": "anchor",
+              "tar_id": "anchor",
+              "angle": 0.0,
+              "angle_param": "angle_0"
+            }
+          ]
+        }
+      },
+      "scene_relational": {
+        "facing": [
+          {
+            "src_kind": "cluster",
+            "src_id": "station_A",
+            "tar_kind": "wall",
+            "tar_id": "B",
+            "mutual": false,
+            "mode": "ortho"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "station_C",
+            "tar_kind": "wall",
+            "tar_id": "B",
+            "mutual": false,
+            "mode": "ortho"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "plating_area",
+            "tar_kind": "wall",
+            "tar_id": "R",
+            "mutual": false,
+            "mode": "ortho"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "cart_row",
+            "tar_kind": "wall",
+            "tar_id": "B",
+            "mutual": false,
+            "mode": "ortho"
+          }
+        ],
+        "left_of": [],
+        "right_of": [],
+        "in_front_of": [],
+        "behind_of": [
+          {
+            "src_kind": "cluster",
+            "src_id": "station_B",
+            "tar_kind": "cluster",
+            "tar_id": "station_A",
+            "clearance": 0.0,
+            "percentile": 0.5,
+            "clearance_param": "zero",
+            "percentile_param": "center_align_fb"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "station_D",
+            "tar_kind": "cluster",
+            "tar_id": "station_C",
+            "clearance": 0.0,
+            "percentile": 0.5,
+            "clearance_param": "zero",
+            "percentile_param": "center_align_fb"
+          }
+        ],
+        "around": [],
+        "angle": [
+          {
+            "src_kind": "cluster",
+            "src_id": "station_B",
+            "tar_kind": "cluster",
+            "tar_id": "station_A",
+            "angle": 180.0,
+            "angle_param": "angle_180"
+          },
+          {
+            "src_kind": "cluster",
+            "src_id": "station_D",
+            "tar_kind": "cluster",
+            "tar_id": "station_C",
+            "angle": 180.0,
+            "angle_param": "angle_180"
+          }
+        ]
+      }
+    },
+    "constraint_params": {
+      "names": [
+        "zero",
+        "back_align",
+        "center_align_lr",
+        "center_align_fb",
+        "angle_0",
+        "angle_180",
+        "station_x",
+        "stationA_y",
+        "stationC_y",
+        "plating_x",
+        "plating_y",
+        "kitchen0_y",
+        "kitchen1_y",
+        "grill0_y",
+        "grill1_y",
+        "fryer_y",
+        "carts_x",
+        "carts_y",
+        "cart_gap"
+      ],
+      "priors": [
+        0.0,
+        0.0,
+        0.5,
+        0.5,
+        0.0,
+        180.0,
+        5.5,
+        5.8,
+        3.3,
+        10.2,
+        4.5,
+        7.3,
+        3.8,
+        3.7,
+        6.9,
+        8.74,
+        6.0,
+        0.8,
+        0.3
+      ],
+      "kinds": [
+        "nonneg",
+        "unit",
+        "unit",
+        "unit",
+        "angle_deg",
+        "angle_deg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg",
+        "nonneg"
+      ]
+    }
+  },
+  "objects": [
+    "deep-fryer-0",
+    "kitchen-0",
+    "kitchen-1",
+    "trash-bin-0",
+    "trash-bin-1",
+    "trash-bin-2",
+    "trash-bin-3",
+    "trash-bin-4",
+    "trash-bin-5",
+    "trash-bin-6",
+    "trash-bin-7",
+    "shopping-cart-0",
+    "shopping-cart-1",
+    "shopping-cart-2",
+    "refrigerator-0",
+    "display-rack-0",
+    "display-rack-1",
+    "display-rack-2",
+    "display-rack-3",
+    "workbench-0",
+    "workbench-1",
+    "workbench-2",
+    "workbench-3",
+    "workbench-4",
+    "workbench-5",
+    "electric-stove-0",
+    "electric-stove-1",
+    "electric-stove-2",
+    "electric-stove-3",
+    "electric-stove-4",
+    "electric-stove-5",
+    "electric-stove-6",
+    "electric-stove-7",
+    "barbecue-grill-0",
+    "barbecue-grill-1",
+    "workbench-6",
+    "workbench-7",
+    "workbench-8",
+    "workbench-9",
+    "workbench-10",
+    "workbench-11",
+    "workbench-12",
+    "workbench-13"
+  ],
+  "bbox": {
+    "x": [
+      0.455475389957428,
+      3.3387413024902344,
+      3.3387413024902344,
+      0.7313660383224487,
+      0.7313660383224487,
+      0.7313660383224487,
+      0.7313660383224487,
+      0.7313660383224487,
+      0.7313660383224487,
+      0.7313660383224487,
+      0.7313660383224487,
+      0.5040040016174316,
+      0.5040040016174316,
+      0.5040040016174316,
+      2.0434579849243164,
+      1.173351764678955,
+      1.173351764678955,
+      1.173351764678955,
+      1.173351764678955,
+      1.9979228973388672,
+      1.9979228973388672,
+      1.9979228973388672,
+      1.9979228973388672,
+      1.9979228973388672,
+      1.9979228973388672,
+      0.8579483032226562,
+      0.8579483032226562,
+      0.8579483032226562,
+      0.8579483032226562,
+      0.8579483032226562,
+      0.8579483032226562,
+      0.8579483032226562,
+      0.8579483032226562,
+      3.1390163898468018,
+      3.1390163898468018,
+      1.8288228511810303,
+      1.8288228511810303,
+      1.8288228511810303,
+      1.8288228511810303,
+      1.8288228511810303,
+      1.8288228511810303,
+      1.8288228511810303,
+      1.8288228511810303
+    ],
+    "y": [
+      0.49927130341529846,
+      0.7128370404243469,
+      0.7128370404243469,
+      0.6323989629745483,
+      0.6323989629745483,
+      0.6323989629745483,
+      0.6323989629745483,
+      0.6323989629745483,
+      0.6323989629745483,
+      0.6323989629745483,
+      0.6323989629745483,
+      0.9416968822479248,
+      0.9416968822479248,
+      0.9416968822479248,
+      1.222856879234314,
+      0.42750322818756104,
+      0.42750322818756104,
+      0.42750322818756104,
+      0.42750322818756104,
+      0.6958412528038025,
+      0.6958412528038025,
+      0.6958412528038025,
+      0.6958412528038025,
+      0.6958412528038025,
+      0.6958412528038025,
+      1.1439218521118164,
+      1.1439218521118164,
+      1.1439218521118164,
+      1.1439218521118164,
+      1.1439218521118164,
+      1.1439218521118164,
+      1.1439218521118164,
+      1.1439218521118164,
+      0.7663393020629883,
+      0.7663393020629883,
+      0.971580445766449,
+      0.971580445766449,
+      0.971580445766449,
+      0.971580445766449,
+      0.971580445766449,
+      0.971580445766449,
+      0.971580445766449,
+      0.971580445766449
+    ],
+    "z": [
+      1.2043800354003906,
+      1.9999961853027344,
+      1.9999961853027344,
+      0.890716016292572,
+      0.890716016292572,
+      0.890716016292572,
+      0.890716016292572,
+      0.890716016292572,
+      0.890716016292572,
+      0.890716016292572,
+      0.890716016292572,
+      1.0080589056015015,
+      1.0080589056015015,
+      1.0080589056015015,
+      1.8342856168746948,
+      1.5099055767059326,
+      1.5099055767059326,
+      1.5099055767059326,
+      1.5099055767059326,
+      0.9095854163169861,
+      0.9095854163169861,
+      0.9095854163169861,
+      0.9095854163169861,
+      0.9095854163169861,
+      0.9095854163169861,
+      1.0188136100769043,
+      1.0188136100769043,
+      1.0188136100769043,
+      1.0188136100769043,
+      1.0188136100769043,
+      1.0188136100769043,
+      1.0188136100769043,
+      1.0188136100769043,
+      1.2084712982177734,
+      1.2084712982177734,
+      0.9430043697357178,
+      0.9430043697357178,
+      0.9430043697357178,
+      0.9430043697357178,
+      0.9430043697357178,
+      0.9430043697357178,
+      0.9430043697357178,
+      0.9430043697357178
+    ]
+  },
+  "room_size": [
+    12.0,
+    9.0
+  ],
+  "pose": {
+    "x": [
+      11.750364303588867,
+      0.35641878843307495,
+      0.35641878843307495,
+      8.694852828979492,
+      2.234584093093872,
+      2.2345051765441895,
+      8.694640159606934,
+      8.702393531799316,
+      2.2260727882385254,
+      2.234790563583374,
+      8.693422317504883,
+      6.804037094116211,
+      6.000014305114746,
+      5.195981025695801,
+      11.387757301330566,
+      0.21394658088684082,
+      0.7112047672271729,
+      1.2095885276794434,
+      1.7081373929977417,
+      10.415279388427734,
+      10.416436195373535,
+      10.417696952819824,
+      9.666974067687988,
+      9.668113708496094,
+      9.669259071350098,
+      5.927431106567383,
+      4.999783039093018,
+      4.999504089355469,
+      5.927142143249512,
+      5.911726951599121,
+      4.984090805053711,
+      4.998384952545166,
+      5.926021575927734,
+      11.616829872131348,
+      11.616829872131348,
+      7.340561866760254,
+      3.585855722427368,
+      3.586423873901367,
+      7.340921878814697,
+      7.328808784484863,
+      3.570178985595703,
+      3.5853335857391357,
+      7.339838981628418
+    ],
+    "y": [
+      8.739999771118164,
+      7.300000190734863,
+      3.799999952316284,
+      6.063264846801758,
+      6.063316822052002,
+      6.800286769866943,
+      6.8001227378845215,
+      3.5058176517486572,
+      3.505847215652466,
+      4.228243350982666,
+      4.2283244132995605,
+      0.8000362515449524,
+      0.8000392317771912,
+      0.8000676035881042,
+      1.0217657089233398,
+      0.5913017392158508,
+      0.5912283658981323,
+      0.5911732912063599,
+      0.5913395285606384,
+      6.5847930908203125,
+      4.516840934753418,
+      2.443723678588867,
+      6.584386348724365,
+      4.516357421875,
+      2.4433841705322266,
+      5.811391353607178,
+      5.8113861083984375,
+      7.052221298217773,
+      7.052200794219971,
+      3.2538585662841797,
+      3.2538974285125732,
+      4.480227947235107,
+      4.480250358581543,
+      3.700000047683716,
+      6.900000095367432,
+      5.896303653717041,
+      5.896373271942139,
+      6.967373371124268,
+      6.967164039611816,
+      3.3388421535491943,
+      3.3389101028442383,
+      4.395411968231201,
+      4.3952226638793945
+    ],
+    "rz": [
+      1.5707963705062866,
+      4.71238899230957,
+      4.71238899230957,
+      3.1418318748474126,
+      3.1423568725585938,
+      -0.00032447435660287743,
+      -0.0008487955201417207,
+      3.1414108276367188,
+      3.1405513286590576,
+      6.283283710479735,
+      0.0009754625498317182,
+      3.1415920257568364,
+      3.1415927410125732,
+      3.1415922641754155,
+      1.5707958936691284,
+      4.712266445159912,
+      4.712255477905273,
+      4.712272644042969,
+      4.712254047393799,
+      -1.5702437162399292,
+      -1.5702193975448608,
+      -1.570361852645874,
+      1.5713504552841189,
+      1.571348309516907,
+      1.571349024772644,
+      3.1415708065032955,
+      3.141568660736084,
+      -6.7146000219509e-05,
+      -9.971405961550772e-05,
+      3.141563892364502,
+      9.424751281738281,
+      -3.706636562128551e-05,
+      6.2831339836120605,
+      1.5707963705062866,
+      1.5707963705062866,
+      3.141570568084717,
+      3.1415684223175044,
+      6.283118247985841,
+      -6.819229747634381e-05,
+      3.14156174659729,
+      3.141565322875977,
+      6.283146858215332,
+      6.283148288726807
+    ]
+  },
+  "snapshot": {
+    "loss": 0.06990370154380798,
+    "nominal": {
+      "coll_global": 0.0,
+      "coll_local": 0.0,
+      "wall": 0.0,
+      "aesthetics": 0.0014868983998894691,
+      "against_wall_loss": 1.9628743075372768e-12,
+      "corner_loss": 2.1128773369127885e-05,
+      "horizontal_abs_loss": 0.029906336218118668,
+      "vertical_abs_loss": 0.0024539027363061905,
+      "gap_loss": 0.15332458913326263,
+      "left_of_loss": 0.01456506922841072,
+      "right_of_loss": 0.014533639885485172,
+      "in_front_of_loss": 0.00024813914205878973,
+      "behind_of_loss": 0.0002160823787562549,
+      "angle_loss": 1.6689300537109375e-06,
+      "fw_loss": 1.1920928955078125e-07,
+      "prior_unit": 0.0,
+      "prior_nonneg": 0.0,
+      "prior_angle_deg": 0.0
+    }
+  }
+}

@@ -1,0 +1,140 @@
+You will be given the user requirement, the room size, and a list of assets to be placed. You must place all the assets in the list into the room using the constraints provided. You must NOT leave any objects unplaced.
+
+Write a constraint program using the provided ConstraintSolver API. 
+These constraints will be converted into differentiable geometric losses and jointly optimized via gradient descent. 
+
+------------------------------------------------------------
+PROCEDURE
+------------------------------------------------------------
+{% if not clustered %} {# NO CLUSTER MODE BRANCH #}
+Step 1 — Spatial Reasoning & Mental Model
+- Read all inputs and form a holistic mental picture of the scene.
+{% if cognitive_map %}- **Build Cognitive Map:** Estimate approximate (x, y, rz) for each asset in the room frame.
+  - Use this to verify spatial plausibility: do sizes, clearances, and relationships fit?
+{% else %}- Mentally verify spatial plausibility: do sizes, clearances, and relationships fit in the room?
+{% endif %}
+Step 2 — Constraint Specification
+- Translate your spatial intent into explicit constraints.
+{% if cognitive_map %}
+{% if volumetric_grounding %}- **Spatial Scaffold:** For EACH asset, compute `.footprint` → `.pose` → `.bounds` (apply SWAP rule for ±90° rotation).
+{% else %}- **Spatial Estimates:** For EACH asset, estimate and compute `.pose`. 
+{% endif %}
+{% endif %}
+
+Step 3 — Validation
+{% if cognitive_map %}
+{% if volumetric_grounding %}- **Finalize Scaffold:** Verify `.footprint`, `.pose`, `.bounds` for ALL assets.
+- **Collision Check:** Confirm no overlapping `.bounds` between any pair.
+{% else %}- **Finalize Cognitive Map:** Assign `asset.pose = Pose(x, y, rz)` for ALL assets based on final constraints.
+- Verify estimated poses are geometrically compatible with the constraints.
+{% endif %}
+{% else %}- Validate constraints are geometrically plausible given object sizes and room dimensions.
+{% endif %}- Ensure EVERY asset has both position and orientation constraints.
+- Look at all your constraints holistically, verify that the scene looks realistic, coherent, and aesthetics.
+- Verify that everything is accessible from the interior of the room.
+
+Step 4 — Backtracking
+- If ANY validation checks in Step 3 failed, BACKTRACK to Step 1 and REPEAT the process until ALL issues have been resolved.
+
+{% else %} {# CLUSTER MODE BRANCH #}
+Step 1 — Decomposition
+- Identify **spatial clusters** that simplify the problem.
+- For each cluster: select one ANCHOR (defines local origin) and list MEMBERS.
+- Identify INDEPENDENT assets (not clustered).
+{% if cognitive_map %}- Mentally estimate cluster footprints and verify room fit.
+{% endif %}
+
+Step 2 — Local Assembly (Per Cluster)
+**For EACH cluster:**
+1. **The Infinite Void:** Forget the room's frame of reference. Mentally isolate this cluster.
+2. **Fix the Origin:** Anchor is locked at `(0, 0)` facing `+Y` (`rz=0`).
+3. **Local Arrangement:** Where do members sit relative to this fixed anchor?
+4. **Constraints:** Define relational constraints using ONLY members in this void.
+5. **Wall-Bound:** If cluster wall-bound, no objects should be behind anchor. Prefer backboard alignment for objects flanking anchor.
+{% if cognitive_map %}5. **Local Cognitive Map:**
+{% if volumetric_grounding -%}
+   - For ALL members: `.footprint` → `.pose` → `.bounds` in **local coordinates**.
+   - Verify no overlapping `.bounds` (local collision check).
+{% else -%}
+   - For ALL members: assign `asset.pose = Pose(...)` in **local coordinates**.
+{% endif -%}
+   - Compute and assign `handle.aabb = AABB(lx, ly)` based on local footprint.
+{% endif %}
+
+Step 3 — Global Integration
+1. **Frame Switch:** Enter the Room Frame (origin = bottom-left corner).
+2. **Black Boxes:** Each cluster is now a sealed box (defined by AABB). Members are invisible.
+3. **Global Placement:** Where do ClusterHandles and Independent Assets sit in the room?
+4. **Constraints:** Define global constraints (walls, corners, inter-box relations).
+{% if cognitive_map %}5. **Global Cognitive Map:**
+{% if volumetric_grounding %}
+   - For EACH handle/asset: `.footprint` → `.pose` → `.bounds` in **room coordinates**.
+   - Verify no overlapping `.bounds` (global collision check).
+{% else %}
+   - For EACH handle/asset: assign `handle.pose` and `independent_asset.pose` in **room coordinates**.
+{% endif %}
+{% endif %}
+
+Step 4 — Validation
+- **Coverage Check:**
+  - LOCAL: Every member (except anchor) has ≥1 position + ≥1 orientation constraint.
+  - GLOBAL: Every ClusterHandle + Independent Asset has ≥1 position + ≥1 orientation constraint.
+- **Scope Hygiene:** No cluster member directly referenced in global scope.
+{% if cognitive_map %}
+{% if volumetric_grounding %}- **Geometry Check:** Verify NO overlapping `.bounds` in global scope. AABBs, clearances fit without obvious collisions and unnatural crowding {# cogmap + volumetric #}
+{% else %}- **Geometry Check:** Verify estimated poses, AABBs, clearances fit without obvious collisions and unnatural crowding. {# cogmap + non-volumetric #}
+{% endif %}
+{% else %}- **Geometry Check:** Verify constraints are plausible given sizes, clearances, and room dimensions. {# no cogmap #}
+{% endif %}
+- **Cluster Check:** against wall/corner clusters should NOT have objects behind the anchor.
+- **Semantic Check:** Look at all your constraints holistically, verify that the scene looks realistic, coherent, and aesthetics. {# no cogmap #}
+- **Circulation Check:** Verify that each zone is accessible with no blockage
+- **Accessibility Check:** Verify ALL operable asset's functional fronts are NOT occluded by other objects (e.g., due to vertical stacking). {# no cogmap #}
+
+Step 5 — Backtracking
+- If ANY validation checks in Step 4 failed, BACKTRACK to Step 1 and REPEAT the process until ALL issues have been resolved.
+{% endif %}
+
+------------------------------------------------------------
+OUTPUT FORMAT (STRICT)
+------------------------------------------------------------
+
+1. First output a short high-level reasoning summary (3-8 bullet points).
+2. Then output ONLY the constraint program in a single ```python ...``` block.
+    - Do NOT output any text after the python code block.
+    - Do NOT repeat the class definitions.
+    - Do NOT re-initialize the provided assets.
+    - Do NOT overwrite asset variables; reference exactly the provided variable names/ids.
+    - Add brief comments in code when helpful.
+3. All constraint function calls MUST explicitly specify ALL parameters, including those with default values.
+4. Do NOT use loops (for/while/etc.) in the constraint program.
+5. Do NOT define helper variables/constants EXCEPT for:
+    - `room = Room(length=length, width=width)`
+    - `walls = {...}`
+    - `<name> = Var(<prior>)` declarations
+    {{ "" if not clustered else "- Cluster handles via `with solver.cluster(...) as <handle>:`" }}
+{% if cognitive_map %}
+{% if volumetric_grounding %}    - Scaffold chain: `.footprint = Footprint(...)`, `.pose = Pose(...)`, `.bounds = Bounds(...)`{{ " and `handle.aabb = AABB(...)`" if clustered else "" }}
+{% else %}    - Pose/AABB assignments: `asset.pose = Pose(...)` {{ "and `handle.aabb = AABB(...)`, `handle.pose = Pose(...)`" if clustered else "" }}
+{% endif %}
+{%- endif %}
+6. ALL numeric parameters MUST be Var references, NOT raw literals.
+{% if cognitive_map %}{% if volumetric_grounding %}7. For EACH `.pose =`, precede with `.footprint =` and follow with `.bounds =` (3-step scaffold).{% endif %}{% endif %}
+
+## Output Example
+$output_example
+
+------------------------------------------------------------
+INPUTS
+------------------------------------------------------------
+
+## User Requirements
+$requirement
+
+## Room Size (length x width)
+$length m x $width m
+
+## Assets List
+```python
+$asset_list_str
+```

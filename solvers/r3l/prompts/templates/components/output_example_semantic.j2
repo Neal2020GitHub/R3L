@@ -1,0 +1,103 @@
+Assume inputs:
+
+```python
+bed_0 = Asset(id="bed-0", description="A modern bed...", size=(2.0, 2.3))
+nightstand_0 = Asset(id="nightstand-0", description="Mint green nightstand...", size=(0.6, 0.5))
+nightstand_1 = Asset(id="nightstand-1", description="Mint green nightstand...", size=(0.6, 0.5))
+```
+
+Requirements:
+- Create a sleeping area with bed and nightstands.
+- Use shared Var variables for symmetric nightstand placement.
+- Place the bed and nightstands against left wall.
+
+```python
+# Define room
+room = Room(length=4.0, width=5.0)
+
+# Derived 2D wall segments (for reference)
+walls = {
+    "L": ((0.0, 0.0), (0.0, room.width)),
+    "R": ((room.length, 0.0), (room.length, room.width)),
+    "B": ((0.0, 0.0), (room.length, 0.0)),
+    "T": ((0.0, room.width), (room.length, room.width))
+}
+
+# Var declarations (SHARED for symmetry)
+ns_clearance = Var(0.2)  # 20cm gap between nightstand and bed
+ns_alignment = Var("backboard")  # align backs with bed
+ns_angle = Var(0.0)  # no offset, same direction as bed
+{% if hv_absolute %}
+bed_y = Var(2.5)  # bed center y coordinate (meters)
+{% else %}
+bed_v_pos = Var(0.5)  # bed vertical position (centered)
+{% endif %}
+
+# Constraints
+
+# Semantic group: sleeping area (NO anchor, NO handle)
+with solver.group(group_id="sleeping_area", members=[bed_0, nightstand_0, nightstand_1]):
+    # Room constraints ALLOWED inside group
+    solver.against_wall(source=bed_0, wall="L")
+{% if hv_absolute %}
+    solver.vertical(source=bed_0, y=bed_y)
+{% else %}
+    solver.vertical(source=bed_0, percentile=bed_v_pos)
+{% endif %}
+
+    # Relational constraints among members (SHARED Var for symmetry)
+    solver.left_of(source=nightstand_0, target=bed_0, clearance=ns_clearance, alignment=ns_alignment)
+    solver.align(source=nightstand_0, target=bed_0, angle=ns_angle)
+
+    solver.right_of(source=nightstand_1, target=bed_0, clearance=ns_clearance, alignment=ns_alignment)
+    solver.align(source=nightstand_1, target=bed_0, angle=ns_angle)
+
+{% if cognitive_map %}
+{% if volumetric_grounding %}
+    # Cognitive Map (Global coordinates—all poses in room frame)
+
+    # Bed: size=(2.0, 2.3), against L wall → rz=-90 → SWAP → footprint (2.3, 2.0)
+    bed_0.footprint = Footprint(rz=-90, lx=2.3, ly=2.0)
+    bed_0.pose = Pose(x=1.15, y=2.5, rz=-90.0)
+    bed_0.bounds = Bounds(x_min=0.0, x_max=2.3, y_min=1.5, y_max=3.5)
+
+    # NS0: size=(0.6, 0.5), rz=-90 → SWAP → footprint (0.5, 0.6)
+    # Left of bed (bed's +Y in local = room's +Y due to -90 rotation)
+    # y = 2.5 + 1.0(bed_half) + 0.2(gap) + 0.3(ns_half) = 4.0
+    # x = Back aligned to wall: 0.0 + 0.25 = 0.25
+    nightstand_0.footprint = Footprint(rz=-90, lx=0.5, ly=0.6)
+    nightstand_0.pose = Pose(x=0.25, y=4.0, rz=-90.0)
+    nightstand_0.bounds = Bounds(x_min=0.0, x_max=0.5, y_min=3.7, y_max=4.3)
+
+    # NS1: size=(0.6, 0.5), rz=-90 → SWAP → footprint (0.5, 0.6)
+    # Right of bed (bed's -Y in local = room's -Y due to -90 rotation)
+    # y = 2.5 - 1.0(bed_half) - 0.2(gap) - 0.3(ns_half) = 1.0
+    nightstand_1.footprint = Footprint(rz=-90, lx=0.5, ly=0.6)
+    nightstand_1.pose = Pose(x=0.25, y=1.0, rz=-90.0)
+    nightstand_1.bounds = Bounds(x_min=0.0, x_max=0.5, y_min=0.7, y_max=1.3)
+{% else %}
+    # Cognitive Map (Global coordinates)
+    # Wall L is X=0.0. Facing into room (right) means rz=-90.0.
+    # Bed (2.0x2.3) center: y=2.5, x=0.0+(2.3/2)=1.15 (x-y swapped due to -90 degree rotation)
+    bed_0.pose = Pose(x=1.15, y=2.5, rz=-90.0)
+
+    # NS (0.6x0.5). Left/right of bed in egocentric frame.
+    # y1 = 2.5 + 1.0(bed_half) + 0.2(gap) + 0.3(ns_half) = 4.0
+    # y2 = 2.5 - 1.0(bed_half) - 0.2(gap) - 0.3(ns_half) = 1.0
+    # x = Back aligned to wall. Back is X=0.0. Center = 0.0 + 0.25 = 0.25
+    nightstand_0.pose = Pose(x=0.25, y=4.0, rz=-90.0)
+    nightstand_1.pose = Pose(x=0.25, y=1.0, rz=-90.0)
+{% endif %}
+{% endif %}
+
+# NOTE: No handle.aabb, no handle.pose — semantic groups have no external representation.
+# All poses are in global room coordinates.
+
+# Final Step - MANDATORY Validations
+# Geometry check: no overlapping or out-of-bound objects ✓
+# Coverage check: all objects have position + orientation constraints ✓
+# Scope check: all references within group block ✓
+# Semantic check: nightstands flanking bed with backboard aligned reflects realistic bedside arrangement ✓
+# Circulation check: sleeping area against L wall; room center and right side remain open ✓
+# Accessibility check: nightstands face into room (rz=-90), drawer fronts unobstructed ✓
+```
