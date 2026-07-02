@@ -32,4 +32,7 @@ uv run -q python main.py
 If you encountered any issue, please file an issue.
 
 
+## Acknowledgements
+This project builds upon [Holodeck](https://github.com/allenai/Holodeck) and [LayoutVLM](https://github.com/sunfanyunn/LayoutVLM). We sincerely thank the authors for their open-source contributions.
+
 ## BibTeX
