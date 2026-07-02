@@ -12,6 +12,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 Then, download the objathor data and retriever models
 ```
+uv sync
 uv run python scripts/download_data.py
 uv run python scripts/download_models.py
 ```
@@ -24,7 +25,6 @@ vim scripts/env.sh
 
 Finally, run the code simply by: 
 ```
-uv sync
 source scripts/env.sh
 uv run -q python main.py
 ```
